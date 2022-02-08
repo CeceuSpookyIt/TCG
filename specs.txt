@@ -1,0 +1,35 @@
+Criar interface para o jogador (Console)
+
+Nome Jogador 1: 
+Nome jogador 2:
+
+"Com qual carta voce quer atacar [2,5,6] --- Mana 3/6":
+
+"jogador vencedor: "
+
+
+Gerenciamento de mana slot deve ser feito na classe player
+Gerenciamento de mana deve ser feito na classe player
+Gerenciamento de ataque possivel deve ser feito na classe player
+gerenciamento de vida deve ser feito na classe player
+gerenciamento de estado (Vivo ou morto) deve ser feito na classe player
+Refartorar if linha 47 da classe game 
+mover embaralhar cartas e comprar cartas inicial para o inicio do jogo
+
+Bleedout = Jogado nao tem mais carta no deck, perde 1 ponto de vida para cada vez que ele ter que comprar carta e nao tem carta no deck
+
+Ter no maximo 5 cartas na mao, se ele tiver mais ele tem que discatar uma carta (opcional ele leva o dano da carta)
+
+
+Criar carta que cura a vida
+Criar carta que buffa proxima carta
+Criar carta que adicionar mana para a proxima rodada
+Criar carta de defesa para o proximo ataque do oponente
+Criar carta para retrnar uma para o deck ou para a mao 
+Criar uma carta para chupar a mana do adversario
+criar carta de contra ataque
+criar carta para reduzir vida temporariamente
+Criar carta hemorragia (veneno)
+Criar sistema de profissoes de jogador (mage, thief, barbaro, bardo, guerreiro)
+
+
