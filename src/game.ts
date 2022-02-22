@@ -9,33 +9,26 @@ export class Game {
     this.jogador1 = jogador1;
     this.jogador2 = jogador2;
     this.iu = iu;
-
-    jogador1.embaralharCartas();
-    jogador2.embaralharCartas();
-
-    for (let compra = 0; compra < 3; compra++) {
-      jogador1.comprarCarta();
-      jogador2.comprarCarta();
-    }
   }
 
   rodarTurno(jogadorAtacante: Player, jogadorDefensor: Player) {
-    if (jogadorAtacante.manaSlot < 10) {
-      jogadorAtacante.manaSlot++;
-    }
-    jogadorAtacante.mana = jogadorAtacante.manaSlot;
+    jogadorAtacante.incrementarManaSlot();
+    jogadorAtacante.reiniciarMana();
     jogadorAtacante.comprarCarta();
-    while (
-      jogadorAtacante.mao.length > 0 &&
-      jogadorAtacante.mao.some((carta) => carta <= jogadorAtacante.mana)
-    ) {
+
+    if (!jogadorAtacante.estaVivo()) {
+      this.Vencedor = jogadorDefensor;
+      return;
+    }
+
+    while (jogadorAtacante.temAtaqueDisponivel()) {
       let ataque: number = this.iu.selecionarCarta();
       if (ataque === -1) {
         break;
       }
       const dano = jogadorAtacante.atacar(ataque);
-      jogadorDefensor.vida -= dano;
-      if (jogadorDefensor.vida <= 0) {
+      jogadorDefensor.defenderAtaque(dano);
+      if (!jogadorDefensor.estaVivo()) {
         this.Vencedor = jogadorAtacante;
       }
     }
@@ -44,13 +37,20 @@ export class Game {
   iniciarJogo() {
     let jogadorAtacante: Player;
     let jogadorDefensor: Player;
-    if (Math.random() < 0.5) {
-      jogadorAtacante = this.jogador1;
-      jogadorDefensor = this.jogador2;
-    } else {
-      jogadorAtacante = this.jogador2;
-      jogadorDefensor = this.jogador1;
+
+    [jogadorAtacante, jogadorDefensor] =
+      Math.random() < 0.5
+        ? [this.jogador1, this.jogador2]
+        : [this.jogador2, this.jogador1];
+
+    this.jogador1.embaralharCartas();
+    this.jogador2.embaralharCartas();
+
+    for (let compra = 0; compra < 3; compra++) {
+      this.jogador1.comprarCarta();
+      this.jogador2.comprarCarta();
     }
+
     this.rodarTurno(jogadorAtacante, jogadorDefensor);
     [jogadorAtacante, jogadorDefensor] = [jogadorDefensor, jogadorAtacante];
     this.rodarTurno(jogadorAtacante, jogadorDefensor);

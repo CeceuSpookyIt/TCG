@@ -1,12 +1,14 @@
 import { Player } from "./player";
 import { Game } from "./game";
 import { IInterfaceUsuario } from "./IInterfaceUsuario";
+import exp from "constants";
 
 describe("Game", () => {
   let _sut: Game;
   let j1EC: jest.SpyInstance;
   let j2EC: jest.SpyInstance;
   let j1CC: jest.SpyInstance;
+  let j2CC: jest.SpyInstance;
   let j1Atacar: jest.SpyInstance;
   let selecionarCarta: jest.Mock<number>;
   let interfaceUsuario: IInterfaceUsuario;
@@ -19,6 +21,7 @@ describe("Game", () => {
     j2EC = jest.spyOn(p2, "embaralharCartas");
 
     j1CC = jest.spyOn(p1, "comprarCarta");
+    j2CC = jest.spyOn(p2, "comprarCarta");
 
     selecionarCarta = jest.fn().mockReturnValue(3);
     interfaceUsuario = {
@@ -44,41 +47,35 @@ describe("Game", () => {
     expect(_sut.jogador2).not.toBe(undefined);
   });
 
-  it("cada jogador comeca com 3 cartas", () => {
-    expect(_sut.jogador1.deck.length).toBe(17);
-    expect(_sut.jogador1.mao.length).toBe(3);
+  it("no inicio do jogo, cada jogador deve comprar 3 cartas", () => {
+    j1CC.mockClear();
+    jest.spyOn(_sut, "rodarTurno").mockImplementation(()=>{});
+    
+    _sut.iniciarJogo();
 
-    expect(_sut.jogador2.deck.length).toBe(17);
-    expect(_sut.jogador2.mao.length).toBe(3);
+    expect(j1CC).toBeCalledTimes(3);
+    expect(j2CC).toBeCalledTimes(3);
   });
 
-  it("Deve embaralhar as cartas no comeco do jogo", () => {
+  it("Deve embaralhar as cartas quando inicar jogo for chamado", () => {
+    j1EC.mockClear();
+    j2EC.mockClear();
+    jest.spyOn(_sut, "rodarTurno").mockImplementation(()=>{});
+    
+    _sut.iniciarJogo();
+
     expect(j1EC).toBeCalledTimes(1);
     expect(j2EC).toBeCalledTimes(1);
   });
 
-  it("Deve adicionar 1 de espaco mana no inicio do turno do jogador", () => {
-    const slotIni = _sut.jogador1.manaSlot;
-
-    _sut.rodarTurno(_sut.jogador1, _sut.jogador2);
-
-    expect(_sut.jogador1.manaSlot).toBe(slotIni + 1);
-  });
-
-  it("Deve limitar o espaco de mana a 10", () => {
-    _sut.jogador1.manaSlot = 10;
-
-    _sut.rodarTurno(_sut.jogador1, _sut.jogador2);
-
-    expect(_sut.jogador1.manaSlot).toBe(10);
-  });
-
   it("Deve disponibilizar toda a mana no inicio do turno", () => {
-    _sut.jogador1.manaSlot = 2;
     selecionarCarta.mockReturnValueOnce(-1);
-    _sut.rodarTurno(_sut.jogador1, _sut.jogador2);
 
-    expect(_sut.jogador1.mana).toBe(3);
+    const rmSpy = jest.spyOn(_sut.jogador2, "reiniciarMana");
+
+    _sut.rodarTurno(_sut.jogador2, _sut.jogador1);
+
+    expect(rmSpy).toBeCalledTimes(1);
   });
 
   it("O jogador 1 deve comprar uma carta", () => {
@@ -92,20 +89,21 @@ describe("Game", () => {
   it("Deve aplicar o dano do jogador 1 no jogador 2", () => {
     _sut.jogador1.manaSlot = 2;
     _sut.jogador1.mao = [3];
-    j1Atacar.mockImplementation(() => {
-      _sut.jogador1.mana -= 3;
-      return 3;
-    });
+    selecionarCarta.mockReturnValueOnce(3);
+    selecionarCarta.mockReturnValueOnce(-1);
+
+    const daSpy = jest.spyOn(_sut.jogador2, "defenderAtaque");
 
     _sut.rodarTurno(_sut.jogador1, _sut.jogador2);
 
-    expect(_sut.jogador2.vida).toBe(27);
+    expect(daSpy).toBeCalledTimes(1);
   });
 
   it("Deve finalizar o jogo se o jogador2 tiver morrido", () => {
-    _sut.jogador1.manaSlot = 2;
-    _sut.jogador1.mao = [3];
-    _sut.jogador2.vida = 2;
+    selecionarCarta.mockReturnValueOnce(2);
+    const tcdSpy = jest.spyOn(_sut.jogador1, "temAtaqueDisponivel").mockReturnValueOnce(true);
+    const daSpy = jest.spyOn(_sut.jogador2, "estaVivo").mockReturnValueOnce(false);
+   _sut.jogador1.nome = "vencedor";
     _sut.rodarTurno(_sut.jogador1, _sut.jogador2);
     expect(_sut.Vencedor).toBe(_sut.jogador1);
   });
@@ -118,7 +116,8 @@ describe("Game", () => {
       .mockReturnValueOnce(3)
       .mockReturnValueOnce(0)
       .mockReturnValueOnce(3)
-      .mockReturnValueOnce(0);
+      .mockReturnValueOnce(0)
+      .mockReturnValueOnce(-1);
     j1Atacar.mockImplementation((x) => {
       _sut.jogador1.mana -= x;
       _sut.jogador1.mao.splice(_sut.jogador1.mao.indexOf(x), 1);
@@ -144,13 +143,14 @@ describe("Game", () => {
     expect(j1Atacar).toBeCalledTimes(0);
   });
 
-  it("Deve adicionar 1 de espaco mana no inicio do turno do jogador", () => {
-    const slotIni = _sut.jogador2.manaSlot;
+  it("Deve chamar incrementar manaslot do jogador", () => {
     selecionarCarta.mockReturnValueOnce(-1);
+
+    const incrementarMSSpy = jest.spyOn(_sut.jogador2, "incrementarManaSlot");
 
     _sut.rodarTurno(_sut.jogador2, _sut.jogador1);
 
-    expect(_sut.jogador2.manaSlot).toBe(slotIni + 1);
+    expect(incrementarMSSpy).toBeCalledTimes(1);
   });
 
   it("Deve adicionar 1 de espaco mana no inicio do turno do jogador", () => {
@@ -178,5 +178,22 @@ describe("Game", () => {
     _sut.iniciarJogo();
     expect(rodarTurno).toBeCalledWith(_sut.jogador1, _sut.jogador2);
     expect(rodarTurno).toBeCalledWith(_sut.jogador2, _sut.jogador1);
+  });
+
+  it("Deve verificar se o jogador continua vivo apos comprar carta", () => {
+    const rodarTurno = jest.spyOn(_sut.jogador1, "estaVivo").mockReturnValueOnce(false);
+
+    _sut.rodarTurno(_sut.jogador1, _sut.jogador2);
+
+    expect(_sut.Vencedor).toBe( _sut.jogador2);
+  });
+
+  it("Deve interromper o jogo caso o jogador tenha corrido tentando comprar carta", () => {
+    jest.spyOn(_sut.jogador1, "estaVivo").mockReturnValueOnce(false);
+    const adspy = jest.spyOn(_sut.jogador1, "temAtaqueDisponivel");
+
+    _sut.rodarTurno(_sut.jogador1, _sut.jogador2);
+
+    expect(adspy).toBeCalledTimes(0);
   });
 });
