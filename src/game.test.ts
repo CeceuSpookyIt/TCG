@@ -1,7 +1,6 @@
 import { Player } from "./player";
 import { Game } from "./game";
 import { IInterfaceUsuario } from "./IInterfaceUsuario";
-import exp from "constants";
 
 describe("Game", () => {
   let _sut: Game;
