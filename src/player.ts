@@ -29,14 +29,44 @@ export class Player {
   }
 
   comprarCarta() {
-    const [primeiraCarta, ...rest] = this.deck;
-    this.mao.push(primeiraCarta);
-    this.deck = rest;
+    if (this.deck.length === 0) {
+      this.vida--;
+    } else {
+      const [primeiraCarta, ...rest] = this.deck;
+      if (this.mao.length === 5) {
+        this.vida -= primeiraCarta;
+      } else {
+        this.mao.push(primeiraCarta);
+      }
+      this.deck = rest;
+    }
   }
 
   embaralharCartas() {
     for (let index = 0; index < 100; index++) {
       this.deck.sort(() => (Math.random() > 0.5 ? 1 : -1));
     }
+  }
+
+  incrementarManaSlot() {
+    if (this.manaSlot < 10) {
+      this.manaSlot++;
+    }
+  }
+
+  reiniciarMana() {
+    this.mana = this.manaSlot;
+  }
+
+  temAtaqueDisponivel(): boolean {
+    return this.mao.length > 0 && this.mao.some((carta) => carta <= this.mana);
+  }
+
+  defenderAtaque(dano: number) {
+    this.vida -= dano;
+  }
+
+  estaVivo(): boolean {
+    return this.vida > 0;
   }
 }
