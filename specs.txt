@@ -13,7 +13,7 @@ corrigir problema splice em ataque e cura
 Criar carta que buffa proxima carta
 Criar carta que adicionar mana para a proxima rodada
 Criar carta de defesa para o proximo ataque do oponente
-Criar carta para retrnar uma para o deck ou para a mao 
+Criar carta para retornar uma para o deck ou para a mao 
 Criar uma carta para chupar a mana do adversario
 criar carta de contra ataque
 criar carta para reduzir vida temporariamente
