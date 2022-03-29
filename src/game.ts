@@ -1,5 +1,8 @@
 import { IInterfaceUsuario } from "./IInterfaceUsuario";
 import { Player } from "./player";
+import { ICard } from "./cards/ICard";
+import { CardAtaque } from "./cards/cardAtaque";
+import { enumTipo } from "./tipo.enum";
 export class Game {
   jogador1: Player;
   jogador2: Player;
@@ -22,14 +25,19 @@ export class Game {
     }
 
     while (jogadorAtacante.temAtaqueDisponivel()) {
-      let ataque: number = this.iu.selecionarCarta();
-      if (ataque === -1) {
+      let carta: ICard | undefined = this.iu.selecionarCarta();
+      if (!carta) {
         break;
       }
-      const dano = jogadorAtacante.atacar(ataque);
-      jogadorDefensor.defenderAtaque(dano);
-      if (!jogadorDefensor.estaVivo()) {
-        this.Vencedor = jogadorAtacante;
+      if (carta.obterTipo() === enumTipo.ataque) {
+        const dano = jogadorAtacante.atacar(carta);
+        jogadorDefensor.defenderAtaque(dano.obterValor());
+        if (!jogadorDefensor.estaVivo()) {
+          this.Vencedor = jogadorAtacante;
+        }
+      }
+      if (carta.obterTipo() === enumTipo.cura){
+        jogadorAtacante.curar(carta);
       }
     }
   }

@@ -1,3 +1,4 @@
+import { ICard } from "./cards/ICard";
 export interface IInterfaceUsuario {
-  selecionarCarta() : number;
+  selecionarCarta(): ICard | undefined;
 }
