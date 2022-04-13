@@ -7,10 +7,9 @@ Nome jogador 2:
 
 "jogador vencedor: "
 
-corrigir problema splice em ataque e cura
 
-
-Criar carta que buffa proxima carta
+Criar carta que buffa proxima (Remover buffs no final do turno)
+pensar em solucao para os tests abstract card em card ataque
 Criar carta que adicionar mana para a proxima rodada
 Criar carta de defesa para o proximo ataque do oponente
 Criar carta para retornar uma para o deck ou para a mao 

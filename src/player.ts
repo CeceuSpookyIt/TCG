@@ -8,6 +8,7 @@ export class Player {
   manaSlot: number;
   deck: ICard[];
   mao: ICard[];
+  buff: number;
 
   constructor(nome: string) {
     this.nome = nome;
@@ -37,49 +38,59 @@ export class Player {
       new CardAtaque(8),
     ];
     this.mao = [];
+    this.buff = 0;
   }
-
-  atacar(carta: ICard) {
-    if (
-      !this.mao.some(
-        (x) =>
-          x.obterCusto() === carta.obterCusto() &&
-          x.obterTipo() === carta.obterTipo()
-      )
-    ) {
-      throw new Error("Você escolheu uma carta não disponível para o ataque!");
+  private validarUtilizacao(carta: ICard, tipo: enumTipo) {
+    if (!this.mao.some((x) => x.toEquals(carta))) {
+      throw new Error("Você não possue essa carta!");
     }
     if (carta.obterCusto() > this.mana) {
       throw new Error("Você não tem mana para jogar esta carta!");
     }
-    if (carta.obterTipo() !== enumTipo.ataque) {
-      throw new Error("A carta deve ser do tipo ataque");
+    if (carta.obterTipo() !== tipo) {
+      throw new Error("A carta selecionada não é do tipo correto!");
     }
-    this.mao.splice(this.mao.indexOf(carta), 1);
+  }
+  atacar(carta: ICard) {
+    this.validarUtilizacao(carta, enumTipo.ataque);
     this.mana -= carta.obterCusto();
+    const dano =
+      this.mao
+        .splice(
+          this.mao.findIndex((cardMao) => cardMao.toEquals(carta)),
+          1
+        )[0]
+        .obterValor() * (this.obterBuff() ? this.obterBuff() : 1);
 
-    return carta;
+    this.buff = 0;
+    return Math.round(dano);
   }
 
   curar(carta: ICard) {
-    if (carta.obterTipo() !== enumTipo.cura) {
-      throw new Error("A carta deve ser do tipo cura");
-    }
-    if (carta.obterCusto() > this.mana) {
-      throw new Error("Você não tem mana para jogar esta carta!");
-    }
-    if (
-      !this.mao.some(
-        (x) =>
-          x.obterCusto() === carta.obterCusto() &&
-          x.obterTipo() === carta.obterTipo()
-      )
-    ) {
-      throw new Error("Você não tem esta carta para jogar!");
-    }
-    this.mao.splice(this.mao.indexOf(carta), 1);
+    this.validarUtilizacao(carta, enumTipo.cura);
     this.mana -= carta.obterCusto();
-    this.vida += carta.obterValor();
+    const cura = this.mao
+      .splice(
+        this.mao.findIndex((cartaMao) => cartaMao.toEquals(carta)),
+        1
+      )[0]
+      .obterValor();
+
+    this.vida += Math.round(cura * (this.obterBuff() ? this.obterBuff() : 1));
+    this.buff = 0;
+  }
+  buffar(carta: ICard) {
+    this.validarUtilizacao(carta, enumTipo.buff);
+    this.buff += carta.obterValor();
+    this.mana -= carta.obterCusto();
+    this.mao.splice(
+      this.mao.findIndex((cartaMao) => cartaMao.toEquals(carta)),
+      1
+    );
+  }
+
+  obterBuff() {
+    return this.buff;
   }
 
   comprarCarta() {
@@ -88,7 +99,7 @@ export class Player {
     } else {
       const [primeiraCarta, ...rest] = this.deck;
       if (this.mao.length === 5) {
-        this.vida -= primeiraCarta.obterValor();
+        this.vida -= primeiraCarta.obterCusto();
       } else {
         this.mao.push(primeiraCarta);
       }
@@ -112,7 +123,7 @@ export class Player {
     this.mana = this.manaSlot;
   }
 
-  temAtaqueDisponivel(): boolean {
+  temCartaDisponivel(): boolean {
     return (
       this.mao.length > 0 &&
       this.mao.some((carta) => carta.obterCusto() <= this.mana)
