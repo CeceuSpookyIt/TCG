@@ -32,8 +32,8 @@ describe("Game", () => {
 
     j1Atacar = jest.spyOn(p1, "atacar").mockImplementation((x) => {
       _sut.jogador1.mana -= x.obterCusto();
-      _sut.jogador1.mao.splice(_sut.jogador1.mao.indexOf(x), 1);
-      return x;
+      _sut.jogador1.mao.splice(_sut.jogador1.mao.findIndex(y => y.toEquals(x)), 1);
+      return x.obterValor();
     });
 
     _sut = new Game(p1, p2, interfaceUsuario);
@@ -104,7 +104,7 @@ describe("Game", () => {
   it("Deve finalizar o jogo se o jogador2 tiver morrido", () => {
     selecionarCarta.mockReturnValueOnce(new CardAtaque(2));
     const tcdSpy = jest
-      .spyOn(_sut.jogador1, "temAtaqueDisponivel")
+      .spyOn(_sut.jogador1, "temCartaDisponivel")
       .mockReturnValueOnce(true);
     const daSpy = jest
       .spyOn(_sut.jogador2, "estaVivo")
@@ -121,7 +121,7 @@ describe("Game", () => {
     selecionarCarta.mockReturnValueOnce(undefined);
     j1Atacar.mockImplementation((x) => {
       _sut.jogador1.mana -= x;
-      _sut.jogador1.mao.splice(_sut.jogador1.mao.indexOf(x), 1);
+      _sut.jogador1.mao.splice(_sut.jogador1.mao.findIndex(y => y.toEquals(x)), 1);
       return x;
     });
     _sut.rodarTurno(_sut.jogador1, _sut.jogador2);
@@ -180,7 +180,7 @@ describe("Game", () => {
 
   it("Deve interromper o jogo caso o jogador tenha corrido tentando comprar carta", () => {
     jest.spyOn(_sut.jogador1, "estaVivo").mockReturnValueOnce(false);
-    const adspy = jest.spyOn(_sut.jogador1, "temAtaqueDisponivel");
+    const adspy = jest.spyOn(_sut.jogador1, "temCartaDisponivel");
 
     _sut.rodarTurno(_sut.jogador1, _sut.jogador2);
 

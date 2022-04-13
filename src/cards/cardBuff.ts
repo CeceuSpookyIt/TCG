@@ -1,23 +1,24 @@
 import { enumTipo } from "../tipo.enum";
 import { AbstractCard } from "./abstractCard";
 
-export class CardAtaque extends AbstractCard {
+export class CardBuff extends AbstractCard {
   private custo: number;
-  private valor: number;
 
   constructor(valor: number) {
     super();
     this.custo = valor;
-    this.valor = valor;
+    
   }
-  
-  obterCusto() {
+
+  obterCusto(): number {
     return this.custo;
   }
-  obterValor() {
-    return this.valor;
+
+  obterValor(): number {
+    return 1 + 0.2 * this.custo;
   }
+
   obterTipo(): enumTipo {
-      return enumTipo.ataque;
+    return enumTipo.buff;
   }
 }

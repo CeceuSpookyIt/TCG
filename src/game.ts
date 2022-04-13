@@ -1,7 +1,6 @@
 import { IInterfaceUsuario } from "./IInterfaceUsuario";
 import { Player } from "./player";
 import { ICard } from "./cards/ICard";
-import { CardAtaque } from "./cards/cardAtaque";
 import { enumTipo } from "./tipo.enum";
 export class Game {
   jogador1: Player;
@@ -12,34 +11,6 @@ export class Game {
     this.jogador1 = jogador1;
     this.jogador2 = jogador2;
     this.iu = iu;
-  }
-
-  rodarTurno(jogadorAtacante: Player, jogadorDefensor: Player) {
-    jogadorAtacante.incrementarManaSlot();
-    jogadorAtacante.reiniciarMana();
-    jogadorAtacante.comprarCarta();
-
-    if (!jogadorAtacante.estaVivo()) {
-      this.Vencedor = jogadorDefensor;
-      return;
-    }
-
-    while (jogadorAtacante.temAtaqueDisponivel()) {
-      let carta: ICard | undefined = this.iu.selecionarCarta();
-      if (!carta) {
-        break;
-      }
-      if (carta.obterTipo() === enumTipo.ataque) {
-        const dano = jogadorAtacante.atacar(carta);
-        jogadorDefensor.defenderAtaque(dano.obterValor());
-        if (!jogadorDefensor.estaVivo()) {
-          this.Vencedor = jogadorAtacante;
-        }
-      }
-      if (carta.obterTipo() === enumTipo.cura){
-        jogadorAtacante.curar(carta);
-      }
-    }
   }
 
   iniciarJogo() {
@@ -63,4 +34,33 @@ export class Game {
     [jogadorAtacante, jogadorDefensor] = [jogadorDefensor, jogadorAtacante];
     this.rodarTurno(jogadorAtacante, jogadorDefensor);
   }
+
+  rodarTurno(jogadorAtacante: Player, jogadorDefensor: Player) {
+    jogadorAtacante.incrementarManaSlot();
+    jogadorAtacante.reiniciarMana();
+    jogadorAtacante.comprarCarta();
+
+    if (!jogadorAtacante.estaVivo()) {
+      this.Vencedor = jogadorDefensor;
+      return;
+    }
+
+    while (jogadorAtacante.temCartaDisponivel()) {
+      let carta: ICard | undefined = this.iu.selecionarCarta();
+      if (!carta) {
+        break;
+      }
+      if (carta.obterTipo() === enumTipo.ataque) {
+        const dano = jogadorAtacante.atacar(carta);
+        jogadorDefensor.defenderAtaque(dano);
+        if (!jogadorDefensor.estaVivo()) {
+          this.Vencedor = jogadorAtacante;
+        }
+      }
+      if (carta.obterTipo() === enumTipo.cura) {
+        jogadorAtacante.curar(carta);
+      }
+    }
+  }
 }
+
