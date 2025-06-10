@@ -358,6 +358,18 @@ describe("player", () => {
     expect(_sut.vida).toBe(7);
   });
 
+  it("Deve permitir utilizar varios escudos em sequencia", () => {
+    _sut.mao = [new CardEscudo(2), new CardEscudo(3)];
+    _sut.mana = 5;
+    _sut.proteger(new CardEscudo(2));
+    _sut.proteger(new CardEscudo(3));
+    _sut.vida = 10;
+    _sut.defenderAtaque(1); // usa escudo 2
+    expect(_sut.vida).toBe(10);
+    _sut.defenderAtaque(4); // usa escudo 3
+    expect(_sut.vida).toBe(9);
+  });
+
   it("Deve remover a carta escudo da mao e gastar mana ao usar", () => {
     _sut.mao = [new CardEscudo(2), new CardAtaque(1)];
     _sut.mana = 3;
