@@ -10,6 +10,7 @@ export class Player {
   mao: ICard[];
   buff: number;
   escudos: number[];
+  venenos: number[];
 
   constructor(nome: string) {
     this.nome = nome;
@@ -23,6 +24,7 @@ export class Player {
     this.mao = [];
     this.buff = 1;
     this.escudos = [];
+    this.venenos = [];
   }
 
   private consumirCarta(carta: ICard): ICard {
@@ -68,6 +70,30 @@ export class Player {
     const cartaUsada = this.consumirCarta(carta);
     this.escudos.push(cartaUsada.obterValor() * this.buff);
     this.buff = 1;
+  }
+
+  envenenar(carta: ICard) {
+    this.validarUtilizacao(carta, enumTipo.veneno);
+    const cartaUsada = this.consumirCarta(carta);
+    const duracao = Math.floor(cartaUsada.obterValor() * this.buff);
+    this.buff = 1;
+    return duracao;
+  }
+
+  aplicarVeneno(duracao: number) {
+    if (duracao > 0) {
+      this.venenos.push(duracao);
+    }
+  }
+
+  processarVenenos() {
+    if (this.venenos.length === 0) {
+      return;
+    }
+    this.vida -= this.venenos.length;
+    this.venenos = this.venenos
+      .map((v) => v - 1)
+      .filter((v) => v > 0);
   }
 
   obterBuff() {

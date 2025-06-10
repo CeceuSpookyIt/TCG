@@ -36,6 +36,7 @@ export class Game {
   }
 
   rodarTurno(jogadorAtacante: Player, jogadorDefensor: Player) {
+    jogadorAtacante.processarVenenos();
     jogadorAtacante.incrementarManaSlot();
     jogadorAtacante.reiniciarMana();
     jogadorAtacante.comprarCarta();
@@ -65,6 +66,10 @@ export class Game {
       }
       if (carta.obterTipo() === enumTipo.escudo) {
         jogadorAtacante.proteger(carta);
+      }
+      if (carta.obterTipo() === enumTipo.veneno) {
+        const duracao = jogadorAtacante.envenenar(carta);
+        jogadorDefensor.aplicarVeneno(duracao);
       }
 
     }
