@@ -2,6 +2,7 @@ import { Player } from "./player";
 import { CardAtaque } from "./cards/cardAtaque";
 import { CardCura } from "./cards/cardCura";
 import { CardBuff } from "./cards/cardBuff";
+import { CardEscudo } from "./cards/cardEscudo";
 import { enumTipo } from "./tipo.enum";
 
 describe("player", () => {
@@ -336,6 +337,33 @@ describe("player", () => {
     _sut.buffar(new CardBuff(2));
     _sut.curar(new CardCura(4));
     expect(_sut.obterBuff()).toBe(0);
+  });
+
+  it("Deve ativar escudo e reduzir o dano do proximo ataque", () => {
+    _sut.mao = [new CardEscudo(2)];
+    _sut.mana = 2;
+    _sut.proteger(new CardEscudo(2));
+    _sut.vida = 10;
+    _sut.defenderAtaque(10);
+    expect(_sut.vida).toBe(2);
+  });
+
+  it("Deve consumir o escudo apos reduzir o dano", () => {
+    _sut.mao = [new CardEscudo(2)];
+    _sut.mana = 2;
+    _sut.proteger(new CardEscudo(2));
+    _sut.vida = 10;
+    _sut.defenderAtaque(1);
+    _sut.defenderAtaque(3);
+    expect(_sut.vida).toBe(7);
+  });
+
+  it("Deve remover a carta escudo da mao e gastar mana ao usar", () => {
+    _sut.mao = [new CardEscudo(2), new CardAtaque(1)];
+    _sut.mana = 3;
+    _sut.proteger(new CardEscudo(2));
+    expect(_sut.mao.length).toBe(1);
+    expect(_sut.mana).toBe(1);
   });
 
 

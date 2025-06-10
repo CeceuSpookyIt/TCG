@@ -9,6 +9,7 @@ export class Player {
   deck: ICard[];
   mao: ICard[];
   buff: number;
+  escudoValor: number;
 
   constructor(nome: string) {
     this.nome = nome;
@@ -39,6 +40,7 @@ export class Player {
     ];
     this.mao = [];
     this.buff = 0;
+    this.escudoValor = 0;
   }
   private validarUtilizacao(carta: ICard, tipo: enumTipo) {
     if (!this.mao.some((x) => x.toEquals(carta))) {
@@ -89,6 +91,16 @@ export class Player {
     );
   }
 
+  proteger(carta: ICard) {
+    this.validarUtilizacao(carta, enumTipo.escudo);
+    this.escudoValor = carta.obterValor();
+    this.mana -= carta.obterCusto();
+    this.mao.splice(
+      this.mao.findIndex((cartaMao) => cartaMao.toEquals(carta)),
+      1
+    );
+  }
+
   obterBuff() {
     return this.buff;
   }
@@ -131,6 +143,14 @@ export class Player {
   }
 
   defenderAtaque(dano: number) {
+    if (this.escudoValor > 0) {
+      const danoReduzido = dano - this.escudoValor;
+      this.escudoValor = 0;
+      if (danoReduzido > 0) {
+        this.vida -= danoReduzido;
+      }
+      return;
+    }
     this.vida -= dano;
   }
 
