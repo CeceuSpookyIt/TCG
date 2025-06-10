@@ -42,6 +42,7 @@ describe("Game", () => {
   afterEach(() => {
     j1EC.mockClear();
     j2EC.mockClear();
+    jest.restoreAllMocks();
   });
 
   it("Deve haver dois jogadores em uma partida", () => {
