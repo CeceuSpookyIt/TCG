@@ -3,6 +3,7 @@ import { CardAtaque } from "./cards/cardAtaque";
 import { CardCura } from "./cards/cardCura";
 import { CardBuff } from "./cards/cardBuff";
 import { CardEscudo } from "./cards/cardEscudo";
+import { CardVeneno } from "./cards/cardVeneno";
 import { enumTipo } from "./tipo.enum";
 
 describe("player", () => {
@@ -387,6 +388,37 @@ describe("player", () => {
     _sut.proteger(new CardEscudo(2));
     expect(_sut.mao.length).toBe(1);
     expect(_sut.mana).toBe(1);
+  });
+
+  it("Deve aplicar veneno ao oponente e reduzir a vida no inicio do turno", () => {
+    _sut.mao = [new CardVeneno(3)];
+    _sut.mana = 3;
+
+    const duracao = _sut.envenenar(new CardVeneno(3));
+    const oponente = new Player("op");
+    oponente.aplicarVeneno(duracao);
+    oponente.processarVenenos();
+    expect(oponente.vida).toBe(29);
+    oponente.processarVenenos();
+    expect(oponente.vida).toBe(28);
+    oponente.processarVenenos();
+    expect(oponente.vida).toBe(27);
+    oponente.processarVenenos();
+    expect(oponente.vida).toBe(27); // sem veneno
+  });
+
+  it("Deve stackar varias instancias de veneno", () => {
+    const op = new Player("op");
+    op.aplicarVeneno(2);
+    op.aplicarVeneno(3);
+    op.processarVenenos();
+    expect(op.vida).toBe(28);
+    op.processarVenenos();
+    expect(op.vida).toBe(26);
+    op.processarVenenos();
+    expect(op.vida).toBe(25);
+    op.processarVenenos();
+    expect(op.vida).toBe(25);
   });
 
 
