@@ -1,6 +1,7 @@
 import { CardAtaque } from "./cards/cardAtaque";
 import { ICard } from "./cards/ICard";
 import { enumTipo } from "./tipo.enum";
+import { enumClasse } from "./classe.enum";
 export class Player {
   nome: string;
   vida: number;
@@ -11,10 +12,13 @@ export class Player {
   buff: number;
   escudos: number[];
   venenos: number[];
+  classe: enumClasse;
+
 
   constructor(nome: string) {
     this.nome = nome;
     this.vida = 30;
+
     this.mana = 1;
     this.manaSlot = 0;
     const valores = [
@@ -35,6 +39,7 @@ export class Player {
   protected validarUtilizacao(carta: ICard, tipo: enumTipo) {
     if (!this.mao.some((x) => x.toEquals(carta))) {
       throw new Error("Você não possui essa carta!");
+
     }
     if (carta.obterCusto() > this.mana) {
       throw new Error("Você não tem mana para jogar esta carta!");
