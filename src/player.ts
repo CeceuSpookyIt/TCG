@@ -1,6 +1,7 @@
 import { CardAtaque } from "./cards/cardAtaque";
 import { ICard } from "./cards/ICard";
 import { enumTipo } from "./tipo.enum";
+import { enumClasse } from "./classe.enum";
 export class Player {
   nome: string;
   vida: number;
@@ -11,6 +12,8 @@ export class Player {
   buff: number;
   escudos: number[];
   venenos: number[];
+  classe: enumClasse;
+
 
   constructor(nome: string) {
     this.nome = nome;
