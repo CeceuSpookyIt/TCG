@@ -214,6 +214,7 @@ describe("Game", () => {
     expect(curarSpy).toBeCalledTimes(1);
   });
 
+
   it("Deve chamar funcao buffar do jogador caso ele tenha escolhido uma carta do tipo buff", () => {
     selecionarCarta
       .mockReturnValueOnce(new CardBuff(2))
@@ -230,3 +231,4 @@ describe("Game", () => {
     expect(buffarSpy).toBeCalledTimes(1);
   });
 });
+
