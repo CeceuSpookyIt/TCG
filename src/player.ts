@@ -18,6 +18,7 @@ export class Player {
   constructor(nome: string) {
     this.nome = nome;
     this.vida = 30;
+
     this.mana = 1;
     this.manaSlot = 0;
     const valores = [
@@ -30,14 +31,15 @@ export class Player {
     this.venenos = [];
   }
 
-  private consumirCarta(carta: ICard): ICard {
+  protected consumirCarta(carta: ICard): ICard {
     this.mana -= carta.obterCusto();
     const indice = this.mao.findIndex((c) => c.toEquals(carta));
     return this.mao.splice(indice, 1)[0];
   }
-  private validarUtilizacao(carta: ICard, tipo: enumTipo) {
+  protected validarUtilizacao(carta: ICard, tipo: enumTipo) {
     if (!this.mao.some((x) => x.toEquals(carta))) {
       throw new Error("Você não possui essa carta!");
+
     }
     if (carta.obterCusto() > this.mana) {
       throw new Error("Você não tem mana para jogar esta carta!");
