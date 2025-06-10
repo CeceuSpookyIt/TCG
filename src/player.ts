@@ -42,7 +42,7 @@ export class Player {
   }
   private validarUtilizacao(carta: ICard, tipo: enumTipo) {
     if (!this.mao.some((x) => x.toEquals(carta))) {
-      throw new Error("Você não possue essa carta!");
+      throw new Error("Você não possui essa carta!");
     }
     if (carta.obterCusto() > this.mana) {
       throw new Error("Você não tem mana para jogar esta carta!");
