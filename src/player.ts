@@ -33,7 +33,8 @@ export class Player {
     this.buff = 1;
     this.escudos = [];
     this.venenos = [];
-       this.manaExtra = 0;
+    this.manaExtra = 0;
+    this.classe = enumClasse.guerreiro;
   }
 
   protected consumirCarta(carta: ICard): ICard {
