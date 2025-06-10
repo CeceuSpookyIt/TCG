@@ -1,6 +1,8 @@
 import { CardAtaque } from "./cards/cardAtaque";
 import { ICard } from "./cards/ICard";
 import { enumTipo } from "./tipo.enum";
+import { enumClasse } from "./classe.enum";
+
 export class Player {
   nome: string;
   vida: number;
@@ -11,28 +13,35 @@ export class Player {
   buff: number;
   escudos: number[];
   manaExtra: number;
+  venenos: number[];
+  classe: enumClasse;
 
   constructor(nome: string) {
+
+
     this.nome = nome;
     this.vida = 30;
-    this.mana = 0;
+
+    this.mana = 1;
     this.manaSlot = 0;
+
     const valores = [
-      0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 6, 6, 7, 8,
+      1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8, 9,
     ];
     this.deck = valores.map((v) => new CardAtaque(v));
     this.mao = [];
     this.buff = 1;
     this.escudos = [];
-    this.manaExtra = 0;
+    this.venenos = [];
+       this.manaExtra = 0;
   }
 
-  private consumirCarta(carta: ICard): ICard {
+  protected consumirCarta(carta: ICard): ICard {
     this.mana -= carta.obterCusto();
     const indice = this.mao.findIndex((c) => c.toEquals(carta));
     return this.mao.splice(indice, 1)[0];
   }
-  private validarUtilizacao(carta: ICard, tipo: enumTipo) {
+  protected validarUtilizacao(carta: ICard, tipo: enumTipo) {
     if (!this.mao.some((x) => x.toEquals(carta))) {
       throw new Error("Você não possui essa carta!");
     }
@@ -50,6 +59,18 @@ export class Player {
 
     this.buff = 1;
     return Math.round(dano);
+  }
+
+
+
+ 
+
+ 
+  carregarMana(carta: ICard) {
+    this.validarUtilizacao(carta, enumTipo.mana);
+    const cartaUsada = this.consumirCarta(carta);
+    this.manaExtra += cartaUsada.obterValor() * this.buff;
+    this.buff = 1;
   }
 
   curar(carta: ICard) {
@@ -72,12 +93,31 @@ export class Player {
     this.buff = 1;
   }
 
-  carregarMana(carta: ICard) {
-    this.validarUtilizacao(carta, enumTipo.mana);
+  envenenar(carta: ICard) {
+    this.validarUtilizacao(carta, enumTipo.veneno);
     const cartaUsada = this.consumirCarta(carta);
-    this.manaExtra += cartaUsada.obterValor() * this.buff;
+    const duracao = Math.floor(cartaUsada.obterValor() * this.buff);
     this.buff = 1;
+    return duracao;
   }
+
+  aplicarVeneno(duracao: number) {
+    if (duracao > 0) {
+      this.venenos.push(duracao);
+    }
+  }
+
+  processarVenenos() {
+    if (this.venenos.length === 0) {
+      return;
+    }
+    const dano = this.venenos.length;
+    this.defenderAtaque(dano);
+    this.venenos = this.venenos
+      .map((v) => v - 1)
+      .filter((v) => v > 0);
+  }
+
 
   obterBuff() {
     return this.buff;

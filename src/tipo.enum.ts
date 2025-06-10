@@ -3,5 +3,7 @@ export enum enumTipo {
   cura,
   buff,
   escudo,
-  mana
+  mana,
+  veneno
 }
+

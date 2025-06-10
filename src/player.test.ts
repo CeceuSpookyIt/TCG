@@ -4,6 +4,7 @@ import { CardCura } from "./cards/cardCura";
 import { CardBuff } from "./cards/cardBuff";
 import { CardEscudo } from "./cards/cardEscudo";
 import { CardMana } from "./cards/cardMana";
+import { CardVeneno } from "./cards/cardVeneno";
 import { enumTipo } from "./tipo.enum";
 
 describe("player", () => {
@@ -21,8 +22,8 @@ describe("player", () => {
     expect(_sut.vida).toBe(30);
   });
 
-  it("Deve ter 0 de mana no comeco do jogo", () => {
-    expect(_sut.mana).toBe(0);
+  it("Deve ter 1 de mana no comeco do jogo", () => {
+    expect(_sut.mana).toBe(1);
   });
 
   it("Deve ter 0 de espacos de mana no comeco do jogo", () => {
@@ -31,26 +32,26 @@ describe("player", () => {
 
   it("Deve iniciar o jogo com a seguinte combinacao de cartas", () => {
     expect(_sut.deck).toEqual([
-      new CardAtaque(0),
-      new CardAtaque(0),
       new CardAtaque(1),
       new CardAtaque(1),
       new CardAtaque(2),
       new CardAtaque(2),
-      new CardAtaque(2),
-      new CardAtaque(3),
       new CardAtaque(3),
       new CardAtaque(3),
       new CardAtaque(3),
       new CardAtaque(4),
       new CardAtaque(4),
       new CardAtaque(4),
+      new CardAtaque(4),
+      new CardAtaque(5),
       new CardAtaque(5),
       new CardAtaque(5),
       new CardAtaque(6),
       new CardAtaque(6),
       new CardAtaque(7),
+      new CardAtaque(7),
       new CardAtaque(8),
+      new CardAtaque(9),
     ]);
   });
 
@@ -390,6 +391,7 @@ describe("player", () => {
     expect(_sut.mana).toBe(1);
   });
 
+
   it("Deve acumular mana extra para o proximo turno", () => {
     _sut.mao = [new CardMana(2)];
     _sut.mana = 2;
@@ -413,6 +415,49 @@ describe("player", () => {
     _sut.carregarMana(new CardMana(2));
     expect(_sut.manaExtra).toBeCloseTo(2.4);
     expect(_sut.buff).toBe(1);
+
+  it("Deve aplicar veneno ao oponente e reduzir a vida no inicio do turno", () => {
+    _sut.mao = [new CardVeneno(3)];
+    _sut.mana = 3;
+
+    const duracao = _sut.envenenar(new CardVeneno(3));
+    const oponente = new Player("op");
+    oponente.aplicarVeneno(duracao);
+    oponente.processarVenenos();
+    expect(oponente.vida).toBe(29);
+    oponente.processarVenenos();
+    expect(oponente.vida).toBe(28);
+    oponente.processarVenenos();
+    expect(oponente.vida).toBe(27);
+    oponente.processarVenenos();
+    expect(oponente.vida).toBe(27); // sem veneno
+  });
+
+  it("Deve stackar varias instancias de veneno", () => {
+    const op = new Player("op");
+    op.aplicarVeneno(2);
+    op.aplicarVeneno(3);
+    op.processarVenenos();
+    expect(op.vida).toBe(28);
+    op.processarVenenos();
+    expect(op.vida).toBe(26);
+    op.processarVenenos();
+    expect(op.vida).toBe(25);
+    op.processarVenenos();
+    expect(op.vida).toBe(25);
+  });
+
+  it("Deve usar escudo para absorver dano acumulado de veneno", () => {
+    const op = new Player("op");
+    op.aplicarVeneno(2);
+    op.aplicarVeneno(1);
+    op.escudos = [3];
+    op.processarVenenos();
+    expect(op.vida).toBe(30);
+    expect(op.escudos.length).toBe(0);
+    op.processarVenenos();
+    expect(op.vida).toBe(29);
+
   });
 
 

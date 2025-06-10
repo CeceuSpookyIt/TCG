@@ -2,6 +2,7 @@ import { IInterfaceUsuario } from "./IInterfaceUsuario";
 import { Player } from "./player";
 import { ICard } from "./cards/ICard";
 import { enumTipo } from "./tipo.enum";
+import { enumClasse } from "./classe.enum";
 export class Game {
   jogador1: Player;
   jogador2: Player;
@@ -24,7 +25,7 @@ export class Game {
 
     this.jogador1.embaralharCartas();
     this.jogador2.embaralharCartas();
-
+  
     for (let compra = 0; compra < 3; compra++) {
       this.jogador1.comprarCarta();
       this.jogador2.comprarCarta();
@@ -36,9 +37,14 @@ export class Game {
   }
 
   rodarTurno(jogadorAtacante: Player, jogadorDefensor: Player) {
+    jogadorAtacante.processarVenenos();
     jogadorAtacante.incrementarManaSlot();
     jogadorAtacante.reiniciarMana();
     jogadorAtacante.aplicarManaExtra();
+    if (jogadorAtacante.classe === enumClasse.bardo) {
+      jogadorAtacante.mana += 1;
+    }
+
     jogadorAtacante.comprarCarta();
 
     if (!jogadorAtacante.estaVivo()) {
@@ -70,9 +76,13 @@ export class Game {
       if (carta.obterTipo() === enumTipo.mana) {
         jogadorAtacante.carregarMana(carta);
       }
+      if (carta.obterTipo() === enumTipo.veneno) {
+        const duracao = jogadorAtacante.envenenar(carta);
+        jogadorDefensor.aplicarVeneno(duracao);
+      }
 
+      
     }
   }
 }
-
 

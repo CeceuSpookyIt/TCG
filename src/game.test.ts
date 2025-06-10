@@ -3,9 +3,12 @@ import { Player } from "./player";
 import { Game } from "./game";
 import { IInterfaceUsuario } from "./IInterfaceUsuario";
 import { CardCura } from "./cards/cardCura";
+
 import { CardBuff } from "./cards/cardBuff";
 import { CardMana } from "./cards/cardMana";
 import { ICard } from "./cards/ICard";
+import { enumClasse } from "./classe.enum";
+
 
 describe("Game", () => {
   let _sut: Game;
@@ -89,6 +92,17 @@ describe("Game", () => {
     expect(rmSpy).toBeCalledTimes(1);
   });
 
+  it("Jogadores da classe Bardo ganham 1 de mana extra no inicio do turno", () => {
+    selecionarCarta.mockReturnValueOnce(undefined);
+    _sut.jogador1.classe = enumClasse.bardo;
+    _sut.jogador1.manaSlot = 0;
+    _sut.jogador1.mana = 0;
+
+    _sut.rodarTurno(_sut.jogador1, _sut.jogador2);
+
+    expect(_sut.jogador1.mana).toBe(2);
+  });
+
   it("O jogador 1 deve comprar uma carta", () => {
     j1CC.mockClear();
 
@@ -125,7 +139,7 @@ describe("Game", () => {
 
   it("Deve dar a possibilidade passar a vez se o jogador escolher -1 como entrada do ataque", () => {
     _sut.jogador1.manaSlot = 5;
-    _sut.jogador1.mao = [new CardAtaque(3), new CardAtaque(3), new CardAtaque(0), new CardAtaque(0)];
+    _sut.jogador1.mao = [new CardAtaque(3), new CardAtaque(3), new CardAtaque(1), new CardAtaque(1)];
     selecionarCarta.mockClear();
     selecionarCarta.mockReturnValueOnce(undefined);
     j1Atacar.mockImplementation((x) => {
