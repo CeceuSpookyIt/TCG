@@ -63,6 +63,9 @@ export class Game {
       if (carta.obterTipo() === enumTipo.buff) {
         jogadorAtacante.buffar(carta);
       }
+      if (carta.obterTipo() === enumTipo.escudo) {
+        jogadorAtacante.proteger(carta);
+      }
 
     }
   }

@@ -1,5 +1,6 @@
 export enum enumTipo {
-  ataque, 
+  ataque,
   cura,
-  buff
+  buff,
+  escudo
 }

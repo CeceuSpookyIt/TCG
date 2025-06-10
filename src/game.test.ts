@@ -13,6 +13,7 @@ describe("Game", () => {
   let j1CC: jest.SpyInstance;
   let j2CC: jest.SpyInstance;
   let j1Atacar: jest.SpyInstance;
+  let j1Buffar: jest.SpyInstance;
   let selecionarCarta: jest.Mock<ICard | undefined>;
   let interfaceUsuario: IInterfaceUsuario;
 
@@ -36,6 +37,10 @@ describe("Game", () => {
       _sut.jogador1.mao.splice(_sut.jogador1.mao.findIndex(y => y.toEquals(x)), 1);
       return x.obterValor();
     });
+    j1Buffar = jest.spyOn(p1, "buffar").mockImplementation((x) => {
+      _sut.jogador1.mana -= x.obterCusto();
+      _sut.jogador1.mao.splice(_sut.jogador1.mao.findIndex(y => y.toEquals(x)), 1);
+    });
 
     _sut = new Game(p1, p2, interfaceUsuario);
   });
@@ -43,6 +48,7 @@ describe("Game", () => {
   afterEach(() => {
     j1EC.mockClear();
     j2EC.mockClear();
+    if (j1Buffar) j1Buffar.mockClear();
     jest.restoreAllMocks();
   });
 
