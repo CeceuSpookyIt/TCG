@@ -27,12 +27,12 @@ export class Player {
     this.venenos = [];
   }
 
-  private consumirCarta(carta: ICard): ICard {
+  protected consumirCarta(carta: ICard): ICard {
     this.mana -= carta.obterCusto();
     const indice = this.mao.findIndex((c) => c.toEquals(carta));
     return this.mao.splice(indice, 1)[0];
   }
-  private validarUtilizacao(carta: ICard, tipo: enumTipo) {
+  protected validarUtilizacao(carta: ICard, tipo: enumTipo) {
     if (!this.mao.some((x) => x.toEquals(carta))) {
       throw new Error("Você não possui essa carta!");
     }
