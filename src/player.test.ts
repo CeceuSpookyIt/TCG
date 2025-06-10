@@ -421,6 +421,18 @@ describe("player", () => {
     expect(op.vida).toBe(25);
   });
 
+  it("Deve usar escudo para absorver dano acumulado de veneno", () => {
+    const op = new Player("op");
+    op.aplicarVeneno(2);
+    op.aplicarVeneno(1);
+    op.escudos = [3];
+    op.processarVenenos();
+    expect(op.vida).toBe(30);
+    expect(op.escudos.length).toBe(0);
+    op.processarVenenos();
+    expect(op.vida).toBe(29);
+  });
+
 
 
 

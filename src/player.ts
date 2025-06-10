@@ -90,7 +90,8 @@ export class Player {
     if (this.venenos.length === 0) {
       return;
     }
-    this.vida -= this.venenos.length;
+    const dano = this.venenos.length;
+    this.defenderAtaque(dano);
     this.venenos = this.venenos
       .map((v) => v - 1)
       .filter((v) => v > 0);
