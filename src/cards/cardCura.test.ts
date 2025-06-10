@@ -1,7 +1,7 @@
 import { CardCura } from "./cardCura";
 import { enumTipo } from "../tipo.enum";
 
-describe("player", () => {
+describe("CardCura", () => {
   let _sut: CardCura;
 
   beforeEach(() => {
