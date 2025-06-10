@@ -21,8 +21,8 @@ describe("player", () => {
     expect(_sut.vida).toBe(30);
   });
 
-  it("Deve ter 0 de mana no comeco do jogo", () => {
-    expect(_sut.mana).toBe(0);
+  it("Deve ter 1 de mana no comeco do jogo", () => {
+    expect(_sut.mana).toBe(1);
   });
 
   it("Deve ter 0 de espacos de mana no comeco do jogo", () => {
@@ -31,26 +31,26 @@ describe("player", () => {
 
   it("Deve iniciar o jogo com a seguinte combinacao de cartas", () => {
     expect(_sut.deck).toEqual([
-      new CardAtaque(0),
-      new CardAtaque(0),
       new CardAtaque(1),
       new CardAtaque(1),
       new CardAtaque(2),
       new CardAtaque(2),
-      new CardAtaque(2),
-      new CardAtaque(3),
       new CardAtaque(3),
       new CardAtaque(3),
       new CardAtaque(3),
       new CardAtaque(4),
       new CardAtaque(4),
       new CardAtaque(4),
+      new CardAtaque(4),
+      new CardAtaque(5),
       new CardAtaque(5),
       new CardAtaque(5),
       new CardAtaque(6),
       new CardAtaque(6),
       new CardAtaque(7),
+      new CardAtaque(7),
       new CardAtaque(8),
+      new CardAtaque(9),
     ]);
   });
 
