@@ -3,6 +3,7 @@ import { CardAtaque } from "./cards/cardAtaque";
 import { CardCura } from "./cards/cardCura";
 import { CardBuff } from "./cards/cardBuff";
 import { CardEscudo } from "./cards/cardEscudo";
+import { CardMana } from "./cards/cardMana";
 import { CardVeneno } from "./cards/cardVeneno";
 import { enumTipo } from "./tipo.enum";
 
@@ -390,6 +391,31 @@ describe("player", () => {
     expect(_sut.mana).toBe(1);
   });
 
+
+  it("Deve acumular mana extra para o proximo turno", () => {
+    _sut.mao = [new CardMana(2)];
+    _sut.mana = 2;
+    _sut.carregarMana(new CardMana(2));
+    expect(_sut.manaExtra).toBe(2);
+    expect(_sut.buff).toBe(1);
+  });
+
+  it("Deve aplicar mana extra no inicio do turno", () => {
+    _sut.manaExtra = 3;
+    _sut.mana = 5;
+    _sut.aplicarManaExtra();
+    expect(_sut.mana).toBe(8);
+    expect(_sut.manaExtra).toBe(0);
+  });
+
+  it("Deve aplicar buff na carta de mana", () => {
+    _sut.mao = [new CardBuff(2), new CardMana(2)];
+    _sut.mana = 4;
+    _sut.buffar(new CardBuff(2));
+    _sut.carregarMana(new CardMana(2));
+    expect(_sut.manaExtra).toBeCloseTo(2.4);
+    expect(_sut.buff).toBe(1);
+
   it("Deve aplicar veneno ao oponente e reduzir a vida no inicio do turno", () => {
     _sut.mao = [new CardVeneno(3)];
     _sut.mana = 3;
@@ -431,6 +457,7 @@ describe("player", () => {
     expect(op.escudos.length).toBe(0);
     op.processarVenenos();
     expect(op.vida).toBe(29);
+
   });
 
 

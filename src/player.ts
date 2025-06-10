@@ -2,6 +2,7 @@ import { CardAtaque } from "./cards/cardAtaque";
 import { ICard } from "./cards/ICard";
 import { enumTipo } from "./tipo.enum";
 import { enumClasse } from "./classe.enum";
+
 export class Player {
   nome: string;
   vida: number;
@@ -11,16 +12,19 @@ export class Player {
   mao: ICard[];
   buff: number;
   escudos: number[];
+  manaExtra: number;
   venenos: number[];
   classe: enumClasse;
 
-
   constructor(nome: string) {
+
+
     this.nome = nome;
     this.vida = 30;
 
     this.mana = 1;
     this.manaSlot = 0;
+
     const valores = [
       1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8, 9,
     ];
@@ -29,6 +33,7 @@ export class Player {
     this.buff = 1;
     this.escudos = [];
     this.venenos = [];
+       this.manaExtra = 0;
   }
 
   protected consumirCarta(carta: ICard): ICard {
@@ -39,7 +44,6 @@ export class Player {
   protected validarUtilizacao(carta: ICard, tipo: enumTipo) {
     if (!this.mao.some((x) => x.toEquals(carta))) {
       throw new Error("Você não possui essa carta!");
-
     }
     if (carta.obterCusto() > this.mana) {
       throw new Error("Você não tem mana para jogar esta carta!");
@@ -55,6 +59,18 @@ export class Player {
 
     this.buff = 1;
     return Math.round(dano);
+  }
+
+
+
+ 
+
+ 
+  carregarMana(carta: ICard) {
+    this.validarUtilizacao(carta, enumTipo.mana);
+    const cartaUsada = this.consumirCarta(carta);
+    this.manaExtra += cartaUsada.obterValor() * this.buff;
+    this.buff = 1;
   }
 
   curar(carta: ICard) {
@@ -102,6 +118,7 @@ export class Player {
       .filter((v) => v > 0);
   }
 
+
   obterBuff() {
     return this.buff;
   }
@@ -138,6 +155,11 @@ export class Player {
       this.mao.length > 0 &&
       this.mao.some((carta) => carta.obterCusto() <= this.mana)
     );
+  }
+
+  aplicarManaExtra() {
+    this.mana += Math.round(this.manaExtra);
+    this.manaExtra = 0;
   }
 
   defenderAtaque(dano: number) {

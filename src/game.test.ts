@@ -3,9 +3,12 @@ import { Player } from "./player";
 import { Game } from "./game";
 import { IInterfaceUsuario } from "./IInterfaceUsuario";
 import { CardCura } from "./cards/cardCura";
+
 import { CardBuff } from "./cards/cardBuff";
+import { CardMana } from "./cards/cardMana";
 import { ICard } from "./cards/ICard";
 import { enumClasse } from "./classe.enum";
+
 
 describe("Game", () => {
   let _sut: Game;
@@ -247,6 +250,19 @@ describe("Game", () => {
     expect(atacarSpy).toBeCalledTimes(0);
     expect(curarSpy).toBeCalledTimes(0);
     expect(buffarSpy).toBeCalledTimes(1);
+  });
+
+  it("Deve chamar funcao carregarMana do jogador caso ele tenha escolhido uma carta do tipo mana", () => {
+    _sut.jogador1.mao = [new CardMana(2)];
+    _sut.jogador1.manaSlot = 2;
+    _sut.jogador1.reiniciarMana();
+    selecionarCarta.mockReturnValueOnce(new CardMana(2)).mockReturnValueOnce(undefined);
+
+    const carregarManaSpy = jest.spyOn(_sut.jogador1, "carregarMana");
+
+    _sut.rodarTurno(_sut.jogador1, _sut.jogador2);
+
+    expect(carregarManaSpy).toBeCalledTimes(1);
   });
 });
 
