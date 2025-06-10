@@ -77,7 +77,7 @@ describe("player", () => {
   it("Deve lancar excecao quando nao houver a carta disponivel na mao", () => {
     _sut.mao = [new CardAtaque(1), new CardAtaque(2), new CardAtaque(3)];
 
-    expect(() => _sut.atacar(new CardAtaque(4))).toThrow("Você não possue essa carta!");
+    expect(() => _sut.atacar(new CardAtaque(4))).toThrow("Você não possui essa carta!");
   });
 
   it("Deve remover a carta utilizada da mao", () => {
@@ -203,18 +203,18 @@ describe("player", () => {
     _sut.mao = [new CardCura(2)];
     _sut.mana = 5;
 
-    expect(() => _sut.curar(new CardCura(3))).toThrow("Você não possue essa carta!");
+    expect(() => _sut.curar(new CardCura(3))).toThrow("Você não possui essa carta!");
   });
 
 
-  it("Deve remover a carta cura da mao quando ela for utilisada", () => {
+  it("Deve remover a carta cura da mao quando ela for utilizada", () => {
     _sut.mao = [new CardAtaque(1), new CardCura(2)];
     _sut.mana = 5;
 
     _sut.curar(new CardCura(2));
     expect(_sut.mao).toStrictEqual([new CardAtaque(1)]);
   });
-  it("Deve remover a carta cura da mao quando ela for utilisada", () => {
+  it("Deve remover a carta cura da mao quando ela for utilizada", () => {
     _sut.mao = [new CardAtaque(1), new CardCura(2)];
     _sut.mana = 5;
 
@@ -222,7 +222,7 @@ describe("player", () => {
     expect(_sut.mana).toBe(3);
   });
 
-  it("Deve remover a carta cura da mao quando ela for utilisada", () => {
+  it("Deve remover a carta cura da mao quando ela for utilizada", () => {
     _sut.mao = [new CardAtaque(1), new CardCura(2), new CardCura(3)];
     _sut.mana = 5;
     _sut.vida = 6;
@@ -232,7 +232,7 @@ describe("player", () => {
     expect(_sut.mao[1].obterCusto()).toBe(3);
   });
 
-  it("Deve remover a carta ataque da mao quando ela for utilisada", () => {
+  it("Deve remover a carta ataque da mao quando ela for utilizada", () => {
     _sut.mao = [new CardAtaque(1), new CardCura(2), new CardCura(3)];
     _sut.mana = 5;
     _sut.vida = 6;
@@ -279,7 +279,7 @@ describe("player", () => {
     _sut.mao = [new CardBuff(2)];
     _sut.mana = 5;
 
-    expect(() => _sut.buffar(new CardBuff(3))).toThrow("Você não possue essa carta!");
+    expect(() => _sut.buffar(new CardBuff(3))).toThrow("Você não possui essa carta!");
   });
 
   it("Deve retornar valor stackado de buff quando chamar funcao obterBuff", () => {
@@ -291,7 +291,7 @@ describe("player", () => {
     expect(_sut.mana).toBe(0);
   });
 
-  it("Deve remover a carta cura da mao quando ela for utilisada", () => {
+  it("Deve remover a carta cura da mao quando ela for utilizada", () => {
     _sut.mao = [new CardAtaque(1), new CardBuff(2), new CardCura(2)];
     _sut.mana = 5;
 
@@ -328,7 +328,7 @@ describe("player", () => {
     expect(_sut.vida).toBe(16);
   });
 
-  it("Deve remover buff apos seer utilisado na cura", () => {
+  it("Deve remover buff apos ser utilisado na cura", () => {
     _sut.mao = [new CardCura(4), new CardBuff(2), new CardCura(2)];
     _sut.mana = 6;
    
