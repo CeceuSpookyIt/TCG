@@ -15,7 +15,7 @@ export class CardBuff extends AbstractCard {
   }
 
   obterValor(): number {
-    return 1 + 0.2 * this.custo;
+    return 1 + 0.1 * this.custo;
   }
 
   obterTipo(): enumTipo {

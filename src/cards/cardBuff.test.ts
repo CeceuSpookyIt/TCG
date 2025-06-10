@@ -13,9 +13,9 @@ describe("CardBuff", () => {
   });
 
   it("Deve retornar o valor do modificador quando a funcao obterValor for chamada", () => {
-    expect(_sut.obterValor()).toBe(2.0);
+    expect(_sut.obterValor()).toBe(1.5);
     _sut = new CardBuff(3)
-    expect(_sut.obterValor()).toBe(1.6);
+    expect(_sut.obterValor()).toBe(1.3);
   });
 
   it("Deve retornar o tipo ataque quando a funcao obterTipo for chamada", () => {

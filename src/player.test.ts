@@ -248,7 +248,7 @@ describe("player", () => {
     _sut.vida = 6;
 
     _sut.buffar(new CardBuff(5));
-    expect(_sut.obterBuff()).toBe(2.0);
+    expect(_sut.obterBuff()).toBe(1.5);
   });
 
   it("Deve retornar valor stackado de buff quando chamar funcao obterBuff", () => {
@@ -258,7 +258,7 @@ describe("player", () => {
 
     _sut.buffar(new CardBuff(5));
     _sut.buffar(new CardBuff(2));
-    expect(_sut.obterBuff()).toBe(3.4);
+    expect(_sut.obterBuff()).toBeCloseTo(1.8);
   });
 
 
@@ -308,7 +308,7 @@ describe("player", () => {
 
     _sut.buffar(new CardBuff(2));
    
-    expect( _sut.atacar(new CardAtaque(4))).toBe(6);
+    expect( _sut.atacar(new CardAtaque(4))).toBe(5);
   });
 
   it("Deve remover buff se for utilisado", () => {
@@ -317,7 +317,18 @@ describe("player", () => {
 
     _sut.buffar(new CardBuff(2));
     _sut.atacar(new CardAtaque(4));
-    expect(_sut.obterBuff()).toBe(0);
+    expect(_sut.obterBuff()).toBe(1);
+  });
+
+  it("Deve aplicar buff no escudo", () => {
+    _sut.mao = [new CardBuff(2), new CardEscudo(2)];
+    _sut.mana = 4;
+
+    _sut.buffar(new CardBuff(2));
+    _sut.proteger(new CardEscudo(2));
+
+    expect(_sut.escudos[0]).toBeCloseTo(2.4);
+    expect(_sut.obterBuff()).toBe(1);
   });
 
   it("Deve aplicar buff na cura", () => {
@@ -326,7 +337,7 @@ describe("player", () => {
     _sut.vida= 10
     _sut.buffar(new CardBuff(2));
     _sut.curar(new CardCura(4))
-    expect(_sut.vida).toBe(16);
+    expect(_sut.vida).toBe(15);
   });
 
   it("Deve remover buff apos ser utilisado na cura", () => {
@@ -336,7 +347,7 @@ describe("player", () => {
 
     _sut.buffar(new CardBuff(2));
     _sut.curar(new CardCura(4));
-    expect(_sut.obterBuff()).toBe(0);
+    expect(_sut.obterBuff()).toBe(1);
   });
 
   it("Deve ativar escudo e reduzir o dano do proximo ataque", () => {
