@@ -10,6 +10,7 @@ export class Player {
   mao: ICard[];
   buff: number;
   escudos: number[];
+  manaExtra: number;
 
   constructor(nome: string) {
     this.nome = nome;
@@ -23,6 +24,7 @@ export class Player {
     this.mao = [];
     this.buff = 1;
     this.escudos = [];
+    this.manaExtra = 0;
   }
 
   private consumirCarta(carta: ICard): ICard {
@@ -70,6 +72,13 @@ export class Player {
     this.buff = 1;
   }
 
+  carregarMana(carta: ICard) {
+    this.validarUtilizacao(carta, enumTipo.mana);
+    const cartaUsada = this.consumirCarta(carta);
+    this.manaExtra += cartaUsada.obterValor() * this.buff;
+    this.buff = 1;
+  }
+
   obterBuff() {
     return this.buff;
   }
@@ -106,6 +115,11 @@ export class Player {
       this.mao.length > 0 &&
       this.mao.some((carta) => carta.obterCusto() <= this.mana)
     );
+  }
+
+  aplicarManaExtra() {
+    this.mana += Math.round(this.manaExtra);
+    this.manaExtra = 0;
   }
 
   defenderAtaque(dano: number) {

@@ -38,6 +38,7 @@ export class Game {
   rodarTurno(jogadorAtacante: Player, jogadorDefensor: Player) {
     jogadorAtacante.incrementarManaSlot();
     jogadorAtacante.reiniciarMana();
+    jogadorAtacante.aplicarManaExtra();
     jogadorAtacante.comprarCarta();
 
     if (!jogadorAtacante.estaVivo()) {
@@ -65,6 +66,9 @@ export class Game {
       }
       if (carta.obterTipo() === enumTipo.escudo) {
         jogadorAtacante.proteger(carta);
+      }
+      if (carta.obterTipo() === enumTipo.mana) {
+        jogadorAtacante.carregarMana(carta);
       }
 
     }
