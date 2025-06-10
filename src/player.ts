@@ -16,31 +16,19 @@ export class Player {
     this.vida = 30;
     this.mana = 0;
     this.manaSlot = 0;
-    this.deck = [
-      new CardAtaque(0),
-      new CardAtaque(0),
-      new CardAtaque(1),
-      new CardAtaque(1),
-      new CardAtaque(2),
-      new CardAtaque(2),
-      new CardAtaque(2),
-      new CardAtaque(3),
-      new CardAtaque(3),
-      new CardAtaque(3),
-      new CardAtaque(3),
-      new CardAtaque(4),
-      new CardAtaque(4),
-      new CardAtaque(4),
-      new CardAtaque(5),
-      new CardAtaque(5),
-      new CardAtaque(6),
-      new CardAtaque(6),
-      new CardAtaque(7),
-      new CardAtaque(8),
+    const valores = [
+      0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 6, 6, 7, 8,
     ];
+    this.deck = valores.map((v) => new CardAtaque(v));
     this.mao = [];
     this.buff = 1;
     this.escudos = [];
+  }
+
+  private consumirCarta(carta: ICard): ICard {
+    this.mana -= carta.obterCusto();
+    const indice = this.mao.findIndex((c) => c.toEquals(carta));
+    return this.mao.splice(indice, 1)[0];
   }
   private validarUtilizacao(carta: ICard, tipo: enumTipo) {
     if (!this.mao.some((x) => x.toEquals(carta))) {
@@ -55,14 +43,8 @@ export class Player {
   }
   atacar(carta: ICard) {
     this.validarUtilizacao(carta, enumTipo.ataque);
-    this.mana -= carta.obterCusto();
-    const dano =
-      this.mao
-        .splice(
-          this.mao.findIndex((cardMao) => cardMao.toEquals(carta)),
-          1
-        )[0]
-        .obterValor() * this.buff;
+    const cartaUsada = this.consumirCarta(carta);
+    const dano = cartaUsada.obterValor() * this.buff;
 
     this.buff = 1;
     return Math.round(dano);
@@ -70,35 +52,21 @@ export class Player {
 
   curar(carta: ICard) {
     this.validarUtilizacao(carta, enumTipo.cura);
-    this.mana -= carta.obterCusto();
-    const cura = this.mao
-      .splice(
-        this.mao.findIndex((cartaMao) => cartaMao.toEquals(carta)),
-        1
-      )[0]
-      .obterValor();
-
+    const cartaUsada = this.consumirCarta(carta);
+    const cura = cartaUsada.obterValor();
     this.vida += Math.round(cura * this.buff);
     this.buff = 1;
   }
   buffar(carta: ICard) {
     this.validarUtilizacao(carta, enumTipo.buff);
-    this.buff = this.buff * carta.obterValor();
-    this.mana -= carta.obterCusto();
-    this.mao.splice(
-      this.mao.findIndex((cartaMao) => cartaMao.toEquals(carta)),
-      1
-    );
+    const cartaUsada = this.consumirCarta(carta);
+    this.buff = this.buff * cartaUsada.obterValor();
   }
 
   proteger(carta: ICard) {
     this.validarUtilizacao(carta, enumTipo.escudo);
-    this.escudos.push(carta.obterValor() * this.buff);
-    this.mana -= carta.obterCusto();
-    this.mao.splice(
-      this.mao.findIndex((cartaMao) => cartaMao.toEquals(carta)),
-      1
-    );
+    const cartaUsada = this.consumirCarta(carta);
+    this.escudos.push(cartaUsada.obterValor() * this.buff);
     this.buff = 1;
   }
 
@@ -107,23 +75,20 @@ export class Player {
   }
 
   comprarCarta() {
-    if (this.deck.length === 0) {
+    const carta = this.deck.shift();
+    if (!carta) {
       this.vida--;
+      return;
+    }
+    if (this.mao.length === 5) {
+      this.vida -= carta.obterCusto();
     } else {
-      const [primeiraCarta, ...rest] = this.deck;
-      if (this.mao.length === 5) {
-        this.vida -= primeiraCarta.obterCusto();
-      } else {
-        this.mao.push(primeiraCarta);
-      }
-      this.deck = rest;
+      this.mao.push(carta);
     }
   }
 
   embaralharCartas() {
-    for (let index = 0; index < 100; index++) {
-      this.deck.sort(() => (Math.random() > 0.5 ? 1 : -1));
-    }
+    this.deck.sort(() => Math.random() - 0.5);
   }
 
   incrementarManaSlot() {
