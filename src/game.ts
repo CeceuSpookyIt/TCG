@@ -60,6 +60,9 @@ export class Game {
       if (carta.obterTipo() === enumTipo.cura) {
         jogadorAtacante.curar(carta);
       }
+      if (carta.obterTipo() === enumTipo.buff) {
+        jogadorAtacante.buffar(carta);
+      }
     }
   }
 }

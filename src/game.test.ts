@@ -3,6 +3,7 @@ import { Player } from "./player";
 import { Game } from "./game";
 import { IInterfaceUsuario } from "./IInterfaceUsuario";
 import { CardCura } from "./cards/cardCura";
+import { CardBuff } from "./cards/cardBuff";
 import { ICard } from "./cards/ICard";
 
 describe("Game", () => {
@@ -210,5 +211,20 @@ describe("Game", () => {
 
     expect(ataqueSpy).toBeCalledTimes(0);
     expect(curarSpy).toBeCalledTimes(1);
+  });
+
+  it("Deve chamar funcao de buff do jogador caso ele tenha escolhido uma carta do tipo buff", () => {
+    selecionarCarta.mockReturnValueOnce(new CardBuff(2)).mockReturnValueOnce(undefined);
+    const ataqueSpy = jest.spyOn(_sut.jogador1, "atacar");
+    const curarSpy = jest.spyOn(_sut.jogador1, "curar");
+    const buffarSpy = jest.spyOn(_sut.jogador1, "buffar").mockImplementation(() => {});
+
+    ataqueSpy.mockClear();
+    curarSpy.mockClear();
+    _sut.rodarTurno(_sut.jogador1, _sut.jogador2);
+
+    expect(buffarSpy).toBeCalledTimes(1);
+    expect(ataqueSpy).toBeCalledTimes(0);
+    expect(curarSpy).toBeCalledTimes(0);
   });
 });
