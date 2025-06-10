@@ -39,7 +39,7 @@ export class Player {
       new CardAtaque(8),
     ];
     this.mao = [];
-    this.buff = 0;
+    this.buff = 1;
     this.escudos = [];
   }
   private validarUtilizacao(carta: ICard, tipo: enumTipo) {
@@ -62,9 +62,9 @@ export class Player {
           this.mao.findIndex((cardMao) => cardMao.toEquals(carta)),
           1
         )[0]
-        .obterValor() * (this.obterBuff() ? this.obterBuff() : 1);
+        .obterValor() * this.buff;
 
-    this.buff = 0;
+    this.buff = 1;
     return Math.round(dano);
   }
 
@@ -78,12 +78,12 @@ export class Player {
       )[0]
       .obterValor();
 
-    this.vida += Math.round(cura * (this.obterBuff() ? this.obterBuff() : 1));
-    this.buff = 0;
+    this.vida += Math.round(cura * this.buff);
+    this.buff = 1;
   }
   buffar(carta: ICard) {
     this.validarUtilizacao(carta, enumTipo.buff);
-    this.buff += carta.obterValor();
+    this.buff = this.buff * carta.obterValor();
     this.mana -= carta.obterCusto();
     this.mao.splice(
       this.mao.findIndex((cartaMao) => cartaMao.toEquals(carta)),
@@ -93,12 +93,13 @@ export class Player {
 
   proteger(carta: ICard) {
     this.validarUtilizacao(carta, enumTipo.escudo);
-    this.escudos.push(carta.obterValor());
+    this.escudos.push(carta.obterValor() * this.buff);
     this.mana -= carta.obterCusto();
     this.mao.splice(
       this.mao.findIndex((cartaMao) => cartaMao.toEquals(carta)),
       1
     );
+    this.buff = 1;
   }
 
   obterBuff() {
