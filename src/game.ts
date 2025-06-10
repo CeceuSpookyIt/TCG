@@ -53,32 +53,37 @@ export class Game {
     }
 
     while (jogadorAtacante.temCartaDisponivel()) {
-      let carta: ICard | undefined = this.iu.selecionarCarta();
+      const carta: ICard | undefined = this.iu.selecionarCarta();
       if (!carta) {
         break;
       }
-      if (carta.obterTipo() === enumTipo.ataque) {
-        const dano = jogadorAtacante.atacar(carta);
-        jogadorDefensor.defenderAtaque(dano);
-        if (!jogadorDefensor.estaVivo()) {
-          this.Vencedor = jogadorAtacante;
+
+      switch (carta.obterTipo()) {
+        case enumTipo.ataque: {
+          const dano = jogadorAtacante.atacar(carta);
+          jogadorDefensor.defenderAtaque(dano);
+          if (!jogadorDefensor.estaVivo()) {
+            this.Vencedor = jogadorAtacante;
+          }
+          break;
         }
-      }
-      if (carta.obterTipo() === enumTipo.cura) {
-        jogadorAtacante.curar(carta);
-      }
-      if (carta.obterTipo() === enumTipo.buff) {
-        jogadorAtacante.buffar(carta);
-      }
-      if (carta.obterTipo() === enumTipo.escudo) {
-        jogadorAtacante.proteger(carta);
-      }
-      if (carta.obterTipo() === enumTipo.mana) {
-        jogadorAtacante.carregarMana(carta);
-      }
-      if (carta.obterTipo() === enumTipo.veneno) {
-        const duracao = jogadorAtacante.envenenar(carta);
-        jogadorDefensor.aplicarVeneno(duracao);
+        case enumTipo.cura:
+          jogadorAtacante.curar(carta);
+          break;
+        case enumTipo.buff:
+          jogadorAtacante.buffar(carta);
+          break;
+        case enumTipo.escudo:
+          jogadorAtacante.proteger(carta);
+          break;
+        case enumTipo.mana:
+          jogadorAtacante.carregarMana(carta);
+          break;
+        case enumTipo.veneno: {
+          const duracao = jogadorAtacante.envenenar(carta);
+          jogadorDefensor.aplicarVeneno(duracao);
+          break;
+        }
       }
 
       

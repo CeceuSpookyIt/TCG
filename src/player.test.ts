@@ -415,7 +415,7 @@ describe("player", () => {
     _sut.carregarMana(new CardMana(2));
     expect(_sut.manaExtra).toBeCloseTo(2.4);
     expect(_sut.buff).toBe(1);
-
+  });
   it("Deve aplicar veneno ao oponente e reduzir a vida no inicio do turno", () => {
     _sut.mao = [new CardVeneno(3)];
     _sut.mana = 3;
