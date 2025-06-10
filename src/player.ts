@@ -14,14 +14,14 @@ export class Player {
   venenos: number[];
   classe: enumClasse;
 
-  constructor(nome: string, classe: enumClasse = enumClasse.guerreiro) {
+
+  constructor(nome: string) {
     this.nome = nome;
     this.vida = 30;
-    this.mana = 0;
+    this.mana = 1;
     this.manaSlot = 0;
-    this.classe = classe;
     const valores = [
-      0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 6, 6, 7, 8,
+      1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8, 9,
     ];
     this.deck = valores.map((v) => new CardAtaque(v));
     this.mao = [];
