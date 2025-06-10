@@ -124,7 +124,7 @@ describe("Game", () => {
 
   it("Deve dar a possibilidade passar a vez se o jogador escolher -1 como entrada do ataque", () => {
     _sut.jogador1.manaSlot = 5;
-    _sut.jogador1.mao = [new CardAtaque(3), new CardAtaque(3), new CardAtaque(0), new CardAtaque(0)];
+    _sut.jogador1.mao = [new CardAtaque(3), new CardAtaque(3), new CardAtaque(1), new CardAtaque(1)];
     selecionarCarta.mockClear();
     selecionarCarta.mockReturnValueOnce(undefined);
     j1Atacar.mockImplementation((x) => {
