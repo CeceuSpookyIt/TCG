@@ -43,6 +43,7 @@ describe("Game", () => {
   afterEach(() => {
     j1EC.mockClear();
     j2EC.mockClear();
+    jest.restoreAllMocks();
   });
 
   it("Deve haver dois jogadores em uma partida", () => {
@@ -213,18 +214,21 @@ describe("Game", () => {
     expect(curarSpy).toBeCalledTimes(1);
   });
 
-  it("Deve chamar funcao de buff do jogador caso ele tenha escolhido uma carta do tipo buff", () => {
-    selecionarCarta.mockReturnValueOnce(new CardBuff(2)).mockReturnValueOnce(undefined);
-    const ataqueSpy = jest.spyOn(_sut.jogador1, "atacar");
-    const curarSpy = jest.spyOn(_sut.jogador1, "curar");
-    const buffarSpy = jest.spyOn(_sut.jogador1, "buffar").mockImplementation(() => {});
 
-    ataqueSpy.mockClear();
-    curarSpy.mockClear();
+  it("Deve chamar funcao buffar do jogador caso ele tenha escolhido uma carta do tipo buff", () => {
+    selecionarCarta
+      .mockReturnValueOnce(new CardBuff(2))
+      .mockReturnValueOnce(undefined);
+
+    const atacarSpy = jest.spyOn(_sut.jogador1, "atacar");
+    const curarSpy = jest.spyOn(_sut.jogador1, "curar");
+    const buffarSpy = jest.spyOn(_sut.jogador1, "buffar");
+
     _sut.rodarTurno(_sut.jogador1, _sut.jogador2);
 
-    expect(buffarSpy).toBeCalledTimes(1);
-    expect(ataqueSpy).toBeCalledTimes(0);
+    expect(atacarSpy).toBeCalledTimes(0);
     expect(curarSpy).toBeCalledTimes(0);
+    expect(buffarSpy).toBeCalledTimes(1);
   });
 });
+

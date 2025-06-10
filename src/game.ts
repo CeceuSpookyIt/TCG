@@ -63,7 +63,9 @@ export class Game {
       if (carta.obterTipo() === enumTipo.buff) {
         jogadorAtacante.buffar(carta);
       }
+
     }
   }
 }
+
 
