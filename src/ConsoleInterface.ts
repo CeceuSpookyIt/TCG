@@ -1,10 +1,14 @@
 import { IInterfaceUsuario } from "./IInterfaceUsuario";
 import { ICard } from "./cards/ICard";
+import { Player } from "./player";
 import promptSync from "prompt-sync";
 
 const prompt = promptSync();
 
 export class ConsoleInterface implements IInterfaceUsuario {
+  exibirTurno(jogador: Player): void {
+    console.log(`----- Turno de ${jogador.nome} -----`);
+  }
   selecionarCarta(mao: ICard[], mana: number): ICard | undefined {
     const opcoes = mao
       .map((c, i) => `${i}:${c.obterValor()}(c${c.obterCusto()})`)
