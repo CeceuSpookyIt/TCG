@@ -32,13 +32,15 @@ function draft(nome: string, cpu: boolean): ICard[] {
     const booster = gerarBooster();
     if (!cpu) {
       console.log(`Booster ${i + 1} para ${nome}`);
-      exibirBooster(booster);
       for (let j = 0; j < 4; j++) {
+        exibirBooster(booster);
         const escolha = parseInt(prompt(`Opcao ${j + 1}: `), 10) - 1;
-        deck.push(
-          escolherCartasBooster(booster, 1, () => escolha)[0]
-        );
-        booster.splice(escolha, 1);
+        try {
+          deck.push(...escolherCartasBooster(booster, 1, () => escolha));
+        } catch {
+          console.log("Indice invalido");
+          j--;
+        }
       }
     } else {
       deck.push(
