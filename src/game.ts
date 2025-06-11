@@ -7,11 +7,22 @@ export class Game {
   jogador1: Player;
   jogador2: Player;
   Vencedor: Player | undefined;
-  iu: IInterfaceUsuario;
-  constructor(jogador1: Player, jogador2: Player, iu: IInterfaceUsuario) {
+  iuJogador1: IInterfaceUsuario;
+  iuJogador2: IInterfaceUsuario;
+  constructor(
+    jogador1: Player,
+    jogador2: Player,
+    iuJogador1: IInterfaceUsuario,
+    iuJogador2: IInterfaceUsuario
+  ) {
     this.jogador1 = jogador1;
     this.jogador2 = jogador2;
-    this.iu = iu;
+    this.iuJogador1 = iuJogador1;
+    this.iuJogador2 = iuJogador2;
+  }
+
+  private interfaceDoJogador(jogador: Player): IInterfaceUsuario {
+    return jogador === this.jogador1 ? this.iuJogador1 : this.iuJogador2;
   }
 
   iniciarJogo() {
@@ -51,7 +62,8 @@ export class Game {
       jogadorAtacante.mana += 1;
     }
 
-    this.iu.exibirTurno(jogadorAtacante);
+    const iuAtual = this.interfaceDoJogador(jogadorAtacante);
+    iuAtual.exibirTurno(jogadorAtacante);
 
     jogadorAtacante.comprarCarta();
 
@@ -61,23 +73,23 @@ export class Game {
     }
 
     while (jogadorAtacante.temCartaDisponivel()) {
-      const carta: ICard | undefined = this.iu.selecionarCarta(
+      const carta: ICard | undefined = iuAtual.selecionarCarta(
         jogadorAtacante.mao,
         jogadorAtacante.mana
       );
       if (!carta) {
         break;
       }
-      if (this.iu.exibirCartaEscolhida) {
-        this.iu.exibirCartaEscolhida(carta);
+      if (iuAtual.exibirCartaEscolhida) {
+        iuAtual.exibirCartaEscolhida(carta);
       }
 
       switch (carta.obterTipo()) {
         case enumTipo.ataque: {
           const dano = jogadorAtacante.atacar(carta);
           jogadorDefensor.defenderAtaque(dano);
-          if (this.iu.exibirDano) {
-            this.iu.exibirDano(jogadorDefensor, dano);
+          if (iuAtual.exibirDano) {
+            iuAtual.exibirDano(jogadorDefensor, dano);
           }
           if (!jogadorDefensor.estaVivo()) {
             this.Vencedor = jogadorAtacante;
