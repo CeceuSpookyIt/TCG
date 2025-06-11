@@ -45,6 +45,8 @@ export class Game {
       jogadorAtacante.mana += 1;
     }
 
+    this.iu.exibirTurno(jogadorAtacante);
+
     jogadorAtacante.comprarCarta();
 
     if (!jogadorAtacante.estaVivo()) {

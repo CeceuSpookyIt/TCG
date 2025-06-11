@@ -34,7 +34,8 @@ describe("Game", () => {
     selecionarCarta = jest.fn().mockReturnValue(new CardAtaque(3));
     interfaceUsuario = {
       selecionarCarta,
-    };
+      exibirTurno: jest.fn(),
+    } as unknown as IInterfaceUsuario;
 
     j1Atacar = jest.spyOn(p1, "atacar").mockImplementation((x) => {
       _sut.jogador1.mana -= x.obterCusto();
