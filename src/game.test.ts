@@ -47,7 +47,7 @@ describe("Game", () => {
       _sut.jogador1.mao.splice(_sut.jogador1.mao.findIndex(y => y.toEquals(x)), 1);
     });
 
-    _sut = new Game(p1, p2, interfaceUsuario);
+    _sut = new Game(p1, p2, interfaceUsuario, interfaceUsuario);
   });
 
   afterEach(() => {
