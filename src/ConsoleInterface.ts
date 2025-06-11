@@ -62,7 +62,7 @@ export class ConsoleInterface implements IInterfaceUsuario {
     console.log("Qual carta voce quer jogar?");
     ordenadas.forEach((c, i) => {
       console.log(
-        `${i + 1} - ${obterNomeTipo(c.obterTipo())} ${c.obterValor()}(c${c.obterCusto()})`
+        `${i + 1} - ${obterNomeTipo(c.obterTipo())} ${c.obterCusto()}`
       );
     });
     const resposta = prompt(`Opcao (0 para passar) --- Mana ${mana}: `);
