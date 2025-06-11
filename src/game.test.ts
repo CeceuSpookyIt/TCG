@@ -7,7 +7,7 @@ import { CardCura } from "./cards/cardCura";
 import { CardBuff } from "./cards/cardBuff";
 import { CardMana } from "./cards/cardMana";
 import { ICard } from "./cards/ICard";
-import { enumClasse } from "./classe.enum";
+import { Bardo } from "./bardo";
 
 
 describe("Game", () => {
@@ -99,13 +99,14 @@ describe("Game", () => {
 
   it("Jogadores da classe Bardo ganham 1 de mana extra no inicio do turno", () => {
     selecionarCarta.mockReturnValueOnce(undefined);
-    _sut.jogador1.classe = enumClasse.bardo;
-    _sut.jogador1.manaSlot = 0;
-    _sut.jogador1.mana = 0;
+    const bardo = new Bardo("Player 1");
+    const game = new Game(bardo, _sut.jogador2, interfaceUsuario, interfaceUsuario);
+    bardo.manaSlot = 0;
+    bardo.mana = 0;
 
-    _sut.rodarTurno(_sut.jogador1, _sut.jogador2);
+    game.rodarTurno(bardo, _sut.jogador2);
 
-    expect(_sut.jogador1.mana).toBe(2);
+    expect(bardo.mana).toBe(2);
   });
 
   it("O jogador 1 deve comprar uma carta", () => {

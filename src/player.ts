@@ -103,10 +103,7 @@ export class Player {
   envenenar(carta: ICard) {
     this.validarUtilizacao(carta, enumTipo.veneno);
     const cartaUsada = this.consumirCarta(carta);
-    let duracao = Math.floor(cartaUsada.obterValor() * this.buff);
-    if (this.classe === enumClasse.ladrao) {
-      duracao += 2;
-    }
+    const duracao = Math.floor(cartaUsada.obterValor() * this.buff);
     this.buff = 1;
     return duracao;
   }
@@ -173,6 +170,8 @@ export class Player {
     this.mana += Math.round(this.manaExtra);
     this.manaExtra = 0;
   }
+
+  inicioTurno() {}
 
   defenderAtaque(dano: number) {
     if (this.escudos.length > 0) {

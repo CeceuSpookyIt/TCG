@@ -2,7 +2,6 @@ import { IInterfaceUsuario } from "./IInterfaceUsuario";
 import { Player } from "./player";
 import { ICard } from "./cards/ICard";
 import { enumTipo } from "./tipo.enum";
-import { enumClasse } from "./classe.enum";
 export class Game {
   jogador1: Player;
   jogador2: Player;
@@ -64,9 +63,7 @@ export class Game {
     jogadorAtacante.incrementarManaSlot();
     jogadorAtacante.reiniciarMana();
     jogadorAtacante.aplicarManaExtra();
-    if (jogadorAtacante.classe === enumClasse.bardo) {
-      jogadorAtacante.mana += 1;
-    }
+    jogadorAtacante.inicioTurno();
 
     jogadorAtacante.comprarCarta();
 
