@@ -6,6 +6,7 @@ import { CardEscudo } from "./cards/cardEscudo";
 import { CardMana } from "./cards/cardMana";
 import { CardVeneno } from "./cards/cardVeneno";
 import { enumTipo } from "./tipo.enum";
+import { enumClasse } from "./classe.enum";
 
 describe("player", () => {
   let _sut: Player;
@@ -458,6 +459,33 @@ describe("player", () => {
     op.processarVenenos();
     expect(op.vida).toBe(29);
 
+  });
+
+  it("Jogadores da classe Ladrao aumentam em 2 turnos a duracao do veneno", () => {
+    _sut.mao = [new CardVeneno(2)];
+    _sut.mana = 2;
+    _sut.classe = enumClasse.ladrao;
+
+    const duracao = _sut.envenenar(new CardVeneno(2));
+    expect(duracao).toBe(4);
+    const oponente = new Player("op");
+    oponente.aplicarVeneno(duracao);
+    for (let i = 0; i < 4; i++) {
+      oponente.processarVenenos();
+    }
+    expect(oponente.vida).toBe(26);
+    oponente.processarVenenos();
+    expect(oponente.vida).toBe(26);
+  });
+
+  it("Bonus de veneno do ladrao considera o buff aplicado", () => {
+    _sut.mao = [new CardBuff(2), new CardVeneno(2)];
+    _sut.mana = 4;
+    _sut.classe = enumClasse.ladrao;
+
+    _sut.buffar(new CardBuff(2));
+    const duracao = _sut.envenenar(new CardVeneno(2));
+    expect(duracao).toBe(4);
   });
 
 
