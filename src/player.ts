@@ -26,7 +26,7 @@ export class Player {
     this.manaSlot = 0;
 
     const valores = [
-      1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8, 9,
+      1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 5, 6, 7, 8,
     ];
     this.deck = valores.map((v) => new CardAtaque(v));
     this.mao = [];
