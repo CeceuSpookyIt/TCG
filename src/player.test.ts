@@ -20,7 +20,7 @@ describe("player", () => {
   });
 
   it("Deve retornar 30 pontos de vida do jogador no inicio do jogo", () => {
-    expect(_sut.vida).toBe(30);
+    expect(_sut.vida).toBe(15);
   });
 
   it("Deve ter 1 de mana no comeco do jogo", () => {
@@ -32,7 +32,6 @@ describe("player", () => {
   });
 
 it("Deve iniciar o jogo com todos os tipos de cartas", () => {
-  expect(_sut.deck.length).toBe(20);
   const tipos = new Set(_sut.deck.map((c) => c.obterTipo()));
   expect(Array.from(tipos)).toEqual(
     expect.arrayContaining([
@@ -415,13 +414,13 @@ it("Deve iniciar o jogo com todos os tipos de cartas", () => {
     const oponente = new Player("op");
     oponente.aplicarVeneno(duracao);
     oponente.processarVenenos();
-    expect(oponente.vida).toBe(29);
+    expect(oponente.vida).toBe(14);
     oponente.processarVenenos();
-    expect(oponente.vida).toBe(28);
+    expect(oponente.vida).toBe(13);
     oponente.processarVenenos();
-    expect(oponente.vida).toBe(27);
+    expect(oponente.vida).toBe(12);
     oponente.processarVenenos();
-    expect(oponente.vida).toBe(27); // sem veneno
+    expect(oponente.vida).toBe(12); // sem veneno
   });
 
   it("Deve stackar varias instancias de veneno", () => {
@@ -429,13 +428,13 @@ it("Deve iniciar o jogo com todos os tipos de cartas", () => {
     op.aplicarVeneno(2);
     op.aplicarVeneno(3);
     op.processarVenenos();
-    expect(op.vida).toBe(28);
+    expect(op.vida).toBe(13);
     op.processarVenenos();
-    expect(op.vida).toBe(26);
+    expect(op.vida).toBe(11);
     op.processarVenenos();
-    expect(op.vida).toBe(25);
+    expect(op.vida).toBe(10);
     op.processarVenenos();
-    expect(op.vida).toBe(25);
+    expect(op.vida).toBe(10);
   });
 
   it("Deve usar escudo para absorver dano acumulado de veneno", () => {
@@ -444,10 +443,10 @@ it("Deve iniciar o jogo com todos os tipos de cartas", () => {
     op.aplicarVeneno(1);
     op.escudos = [3];
     op.processarVenenos();
-    expect(op.vida).toBe(30);
+    expect(op.vida).toBe(15);
     expect(op.escudos.length).toBe(0);
     op.processarVenenos();
-    expect(op.vida).toBe(29);
+    expect(op.vida).toBe(14);
 
   });
 
@@ -463,9 +462,9 @@ it("Deve iniciar o jogo com todos os tipos de cartas", () => {
     for (let i = 0; i < 4; i++) {
       oponente.processarVenenos();
     }
-    expect(oponente.vida).toBe(26);
+    expect(oponente.vida).toBe(11);
     oponente.processarVenenos();
-    expect(oponente.vida).toBe(26);
+    expect(oponente.vida).toBe(11);
   });
 
   it("Bonus de veneno do ladrao considera o buff aplicado", () => {

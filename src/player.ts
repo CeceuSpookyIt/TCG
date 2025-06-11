@@ -25,7 +25,7 @@ export class Player {
 
 
     this.nome = nome;
-    this.vida = 30;
+    this.vida = 15;
 
     this.mana = 1;
     this.manaSlot = 0;
@@ -73,12 +73,6 @@ export class Player {
     this.buff = 1;
     return Math.round(dano);
   }
-
-
-
- 
-
- 
   carregarMana(carta: ICard) {
     this.validarUtilizacao(carta, enumTipo.mana);
     const cartaUsada = this.consumirCarta(carta);
