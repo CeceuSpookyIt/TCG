@@ -18,7 +18,7 @@ describe("Game", () => {
   let j2CC: jest.SpyInstance;
   let j1Atacar: jest.SpyInstance;
   let j1Buffar: jest.SpyInstance;
-  let selecionarCarta: jest.Mock<ICard | undefined>;
+  let selecionarCarta: jest.Mock<ICard | undefined, [ICard[], number]>;
   let interfaceUsuario: IInterfaceUsuario;
 
   beforeEach(() => {
