@@ -36,6 +36,8 @@ Criar sistema de profissoes de jogador (mage, thief, barbaro, bardo, guerreiro)
 - A mana e reiniciada de acordo com os slots disponiveis.
 - Jogar cartas enquanto houver mana suficiente.
 - Efeitos de buff, escudo e veneno sao processados conforme as cartas.
+- Informar vida e escudos no inicio do turno e o dano recebido por veneno.
+- Exibir o efeito de cada carta utilizada, como cura aplicada e porcentagem de buff.
 
 4. Tipos de carta
 - Ataque: causa dano direto.

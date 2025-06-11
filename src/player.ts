@@ -125,13 +125,15 @@ export class Player {
 
   processarVenenos() {
     if (this.venenos.length === 0) {
-      return;
+      return 0;
     }
     const dano = this.venenos.length;
+    const vidaAntes = this.vida;
     this.defenderAtaque(dano);
     this.venenos = this.venenos
       .map((v) => v - 1)
       .filter((v) => v > 0);
+    return vidaAntes - this.vida;
   }
 
 
