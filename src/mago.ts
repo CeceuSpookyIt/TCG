@@ -3,8 +3,8 @@ import { ICard } from "./cards/ICard";
 import { Player } from "./player";
 
 export class Mago extends Player {
-  constructor(nome: string) {
-    super(nome);
+  constructor(nome: string, deck?: ICard[]) {
+    super(nome, deck);
   }
 
   override buffar(carta: ICard) {

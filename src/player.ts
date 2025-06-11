@@ -21,7 +21,7 @@ export class Player {
   venenos: number[];
   classe: enumClasse;
 
-  constructor(nome: string) {
+  constructor(nome: string, deck?: ICard[]) {
 
 
     this.nome = nome;
@@ -30,17 +30,21 @@ export class Player {
     this.mana = 1;
     this.manaSlot = 0;
 
-    this.deck = [];
-    for (const valor of [1, 2, 3, 4, 5, 6, 7]) {
-      this.deck.push(new CardAtaque(valor));
-      this.deck.push(new CardCura(valor));
-      this.deck.push(new CardBuff(valor));
-      this.deck.push(new CardEscudo(valor));
-      this.deck.push(new CardMana(valor));
-      this.deck.push(new CardVeneno(valor));
+    if (deck) {
+      this.deck = deck;
+    } else {
+      this.deck = [];
+      for (const valor of [1, 2, 3, 4, 5, 6, 7]) {
+        this.deck.push(new CardAtaque(valor));
+        this.deck.push(new CardCura(valor));
+        this.deck.push(new CardBuff(valor));
+        this.deck.push(new CardEscudo(valor));
+        this.deck.push(new CardMana(valor));
+        this.deck.push(new CardVeneno(valor));
+      }
+      this.deck.push(new CardAtaque(8));
+      this.deck.push(new CardCura(8));
     }
-    this.deck.push(new CardAtaque(8));
-    this.deck.push(new CardCura(8));
     this.mao = [];
     this.buff = 1;
     this.escudos = [];
