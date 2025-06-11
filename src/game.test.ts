@@ -64,7 +64,9 @@ describe("Game", () => {
 
   it("no inicio do jogo, cada jogador deve comprar 3 cartas", () => {
     j1CC.mockClear();
-    jest.spyOn(_sut, "rodarTurno").mockImplementation(() => {});
+    jest.spyOn(_sut, "rodarTurno").mockImplementation(() => {
+      _sut.Vencedor = _sut.jogador1;
+    });
 
     _sut.iniciarJogo();
 
@@ -75,7 +77,9 @@ describe("Game", () => {
   it("Deve embaralhar as cartas quando inicar jogo for chamado", () => {
     j1EC.mockClear();
     j2EC.mockClear();
-    jest.spyOn(_sut, "rodarTurno").mockImplementation(() => {});
+    jest.spyOn(_sut, "rodarTurno").mockImplementation(() => {
+      _sut.Vencedor = _sut.jogador1;
+    });
 
     _sut.iniciarJogo();
 
@@ -171,11 +175,14 @@ describe("Game", () => {
 
     const rodarTurno = jest
       .spyOn(_sut, "rodarTurno")
-      .mockImplementation(() => {});
+      .mockImplementation(() => {
+        _sut.Vencedor = _sut.jogador1;
+      });
 
     _sut.iniciarJogo();
     expect(rodarTurno).toBeCalledWith(_sut.jogador1, _sut.jogador2);
     rodarTurno.mockClear();
+    _sut.Vencedor = undefined;
     _sut.iniciarJogo();
     expect(rodarTurno).toBeCalledWith(_sut.jogador2, _sut.jogador1);
   });
@@ -185,10 +192,11 @@ describe("Game", () => {
 
     const rodarTurno = jest
       .spyOn(_sut, "rodarTurno")
-      .mockImplementation(() => {});
+      .mockImplementation(() => {
+        _sut.Vencedor = _sut.jogador1;
+      });
 
     _sut.iniciarJogo();
-    expect(rodarTurno).toBeCalledWith(_sut.jogador1, _sut.jogador2);
     expect(rodarTurno).toBeCalledWith(_sut.jogador2, _sut.jogador1);
   });
 
@@ -264,6 +272,26 @@ describe("Game", () => {
     _sut.rodarTurno(_sut.jogador1, _sut.jogador2);
 
     expect(carregarManaSpy).toBeCalledTimes(1);
+  });
+
+  it("os turnos devem se repetir ate que haja um vencedor", () => {
+    jest.spyOn(Math, "random").mockReturnValueOnce(0.2);
+    const ordem: string[] = [];
+    jest.spyOn(_sut, "rodarTurno").mockImplementation((a, d) => {
+      ordem.push(`${a.nome}->${d.nome}`);
+      if (ordem.length === 3) {
+        _sut.Vencedor = a;
+      }
+    });
+
+    _sut.iniciarJogo();
+
+    expect(ordem).toEqual([
+      "Player 1->Player 2",
+      "Player 2->Player 1",
+      "Player 1->Player 2",
+    ]);
+    expect(_sut.Vencedor).toBe(_sut.jogador1);
   });
 });
 
