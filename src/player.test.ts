@@ -6,7 +6,7 @@ import { CardEscudo } from "./cards/cardEscudo";
 import { CardMana } from "./cards/cardMana";
 import { CardVeneno } from "./cards/cardVeneno";
 import { enumTipo } from "./tipo.enum";
-import { enumClasse } from "./classe.enum";
+import { Ladrao } from "./ladrao";
 
 describe("player", () => {
   let _sut: Player;
@@ -451,11 +451,11 @@ it("Deve iniciar o jogo com todos os tipos de cartas", () => {
   });
 
   it("Jogadores da classe Ladrao aumentam em 2 turnos a duracao do veneno", () => {
-    _sut.mao = [new CardVeneno(2)];
-    _sut.mana = 2;
-    _sut.classe = enumClasse.ladrao;
+    const ladrao = new Ladrao("Player");
+    ladrao.mao = [new CardVeneno(2)];
+    ladrao.mana = 2;
 
-    const duracao = _sut.envenenar(new CardVeneno(2));
+    const duracao = ladrao.envenenar(new CardVeneno(2));
     expect(duracao).toBe(4);
     const oponente = new Player("op");
     oponente.aplicarVeneno(duracao);
@@ -468,12 +468,12 @@ it("Deve iniciar o jogo com todos os tipos de cartas", () => {
   });
 
   it("Bonus de veneno do ladrao considera o buff aplicado", () => {
-    _sut.mao = [new CardBuff(2), new CardVeneno(2)];
-    _sut.mana = 4;
-    _sut.classe = enumClasse.ladrao;
+    const ladrao = new Ladrao("Player");
+    ladrao.mao = [new CardBuff(2), new CardVeneno(2)];
+    ladrao.mana = 4;
 
-    _sut.buffar(new CardBuff(2));
-    const duracao = _sut.envenenar(new CardVeneno(2));
+    ladrao.buffar(new CardBuff(2));
+    const duracao = ladrao.envenenar(new CardVeneno(2));
     expect(duracao).toBe(4);
   });
 

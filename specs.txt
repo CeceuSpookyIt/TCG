@@ -1,7 +1,8 @@
 Criar interface para o jogador (Console)
 
-Nome Jogador 1: 
+Nome Jogador 1:
 Nome jogador 2:
+As classes devem ser escolhidas antes de perguntar o nome do jogador.
 
 As cartas devem ser listadas em multiplas linhas, ordenadas por valor crescente e numeradas a partir de 1 durante a selecao de cartas do turno.
 
