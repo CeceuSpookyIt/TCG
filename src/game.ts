@@ -54,16 +54,19 @@ export class Game {
   }
 
   rodarTurno(jogadorAtacante: Player, jogadorDefensor: Player) {
-    jogadorAtacante.processarVenenos();
+    const iuAtual = this.interfaceDoJogador(jogadorAtacante);
+    const vidaInicial = jogadorAtacante.vida;
+    const danoVeneno = jogadorAtacante.processarVenenos();
+    iuAtual.exibirTurno(jogadorAtacante);
+    if (iuAtual.exibirInicioTurno) {
+      iuAtual.exibirInicioTurno(jogadorAtacante, vidaInicial, danoVeneno);
+    }
     jogadorAtacante.incrementarManaSlot();
     jogadorAtacante.reiniciarMana();
     jogadorAtacante.aplicarManaExtra();
     if (jogadorAtacante.classe === enumClasse.bardo) {
       jogadorAtacante.mana += 1;
     }
-
-    const iuAtual = this.interfaceDoJogador(jogadorAtacante);
-    iuAtual.exibirTurno(jogadorAtacante);
 
     jogadorAtacante.comprarCarta();
 
@@ -83,6 +86,14 @@ export class Game {
       if (iuAtual.exibirCartaEscolhida) {
         iuAtual.exibirCartaEscolhida(carta);
       }
+      if (
+        iuAtual.exibirBuffNaCarta &&
+        jogadorAtacante.obterBuff() > 1 &&
+        carta.obterTipo() !== enumTipo.buff
+      ) {
+        const percentual = (jogadorAtacante.obterBuff() - 1) * 100;
+        iuAtual.exibirBuffNaCarta(Math.round(percentual));
+      }
 
       switch (carta.obterTipo()) {
         case enumTipo.ataque: {
@@ -97,20 +108,43 @@ export class Game {
           break;
         }
         case enumTipo.cura:
+          const vidaAntes = jogadorAtacante.vida;
           jogadorAtacante.curar(carta);
+          if (iuAtual.exibirCura) {
+            iuAtual.exibirCura(
+              jogadorAtacante.vida - vidaAntes,
+              jogadorAtacante.vida
+            );
+          }
           break;
         case enumTipo.buff:
+          const incremento = carta.obterValor();
           jogadorAtacante.buffar(carta);
+          if (iuAtual.exibirBuffAplicado) {
+            iuAtual.exibirBuffAplicado(Math.round((incremento - 1) * 100));
+          }
           break;
         case enumTipo.escudo:
+          const buffAtual = jogadorAtacante.obterBuff();
           jogadorAtacante.proteger(carta);
+          if (iuAtual.exibirEscudo) {
+            iuAtual.exibirEscudo(Math.round(carta.obterValor() * buffAtual));
+          }
           break;
         case enumTipo.mana:
+          const buffMana = jogadorAtacante.obterBuff();
           jogadorAtacante.carregarMana(carta);
+          if (iuAtual.exibirManaExtra) {
+            iuAtual.exibirManaExtra(Math.round(carta.obterValor() * buffMana));
+          }
           break;
         case enumTipo.veneno: {
+          const buffVeneno = jogadorAtacante.obterBuff();
           const duracao = jogadorAtacante.envenenar(carta);
           jogadorDefensor.aplicarVeneno(duracao);
+          if (iuAtual.exibirVeneno) {
+            iuAtual.exibirVeneno(Math.floor(carta.obterValor() * buffVeneno));
+          }
           break;
         }
       }

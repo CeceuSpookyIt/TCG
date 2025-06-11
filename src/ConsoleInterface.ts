@@ -20,6 +20,43 @@ export class ConsoleInterface implements IInterfaceUsuario {
       `${alvo.nome} sofreu ${dano} de dano e possui ${alvo.vida} de vida`
     );
   }
+
+  exibirInicioTurno(
+    jogador: Player,
+    vidaInicial: number,
+    danoVeneno: number
+  ): void {
+    const escudos = jogador.escudos.join(", ") || "0";
+    console.log(`Vida: ${vidaInicial} - Escudos: ${escudos}`);
+    if (danoVeneno > 0) {
+      console.log(`Sofreu ${danoVeneno} de dano de veneno`);
+      console.log(`Vida atual: ${jogador.vida}`);
+    }
+  }
+
+  exibirCura(cura: number, vidaTotal: number): void {
+    console.log(`Cura de ${cura}. Vida atual: ${vidaTotal}`);
+  }
+
+  exibirBuffAplicado(percentual: number): void {
+    console.log(`Buff de ${percentual}% aplicado`);
+  }
+
+  exibirBuffNaCarta(percentual: number): void {
+    console.log(`Esta acao recebera bonus de ${percentual}%`);
+  }
+
+  exibirEscudo(valor: number): void {
+    console.log(`Escudo ativado com valor ${valor}`);
+  }
+
+  exibirManaExtra(valor: number): void {
+    console.log(`Mana extra de ${valor} para o proximo turno`);
+  }
+
+  exibirVeneno(duracao: number): void {
+    console.log(`Veneno aplicado por ${duracao} turno(s)`);
+  }
   selecionarCarta(mao: ICard[], mana: number): ICard | undefined {
     const opcoes = mao
       .map(

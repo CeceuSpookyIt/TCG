@@ -6,4 +6,15 @@ export interface IInterfaceUsuario {
   exibirTurno(jogador: Player): void;
   exibirCartaEscolhida?(carta: ICard): void;
   exibirDano?(alvo: Player, dano: number): void;
+  exibirInicioTurno?(
+    jogador: Player,
+    vidaInicial: number,
+    danoVeneno: number
+  ): void;
+  exibirCura?(cura: number, vidaTotal: number): void;
+  exibirBuffAplicado?(percentual: number): void;
+  exibirBuffNaCarta?(percentual: number): void;
+  exibirEscudo?(valor: number): void;
+  exibirManaExtra?(valor: number): void;
+  exibirVeneno?(duracao: number): void;
 }
