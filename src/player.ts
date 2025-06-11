@@ -97,7 +97,10 @@ export class Player {
   envenenar(carta: ICard) {
     this.validarUtilizacao(carta, enumTipo.veneno);
     const cartaUsada = this.consumirCarta(carta);
-    const duracao = Math.floor(cartaUsada.obterValor() * this.buff);
+    let duracao = Math.floor(cartaUsada.obterValor() * this.buff);
+    if (this.classe === enumClasse.ladrao) {
+      duracao += 2;
+    }
     this.buff = 1;
     return duracao;
   }
