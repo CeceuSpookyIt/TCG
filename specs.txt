@@ -24,13 +24,14 @@ Criar sistema de profissoes de jogador (mage, thief, barbaro, bardo, guerreiro)
 
 ==== Especificacao Funcional ====
 1. Inicio
-- Perguntar a quantidade de jogadores (1 ou 2).
-- No modo solo o segundo jogador e controlado pela CPU.
-- Solicitar o nome de cada jogador.
-- Cada jogador monta um deck de 40 cartas antes de escolher a classe.
-- O deck e formado por 10 boosters de 8 cartas aleatorias cada um, dos quais o jogador escolhe 4.
-- A CPU realiza o mesmo processo automaticamente.
-- O booster deve ser exibido apos cada escolha para atualizar os indices restantes.
+- Exibir menu com as opcoes:
+  1 - Single player
+  2 - Multiplayer
+  3 - Criar deck
+  4 - Fechar
+- Decks criados sao gravados em arquivo.
+- Ao iniciar uma partida cada jogador pode escolher um deck salvo ou usar o deck padrao.
+- Apos o termino da partida o menu e exibido novamente.
 
 2. Objetivo
 - Cada jogador comeca com 30 pontos de vida.
