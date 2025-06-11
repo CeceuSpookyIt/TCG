@@ -1,6 +1,7 @@
 import { IInterfaceUsuario } from "./IInterfaceUsuario";
 import { ICard } from "./cards/ICard";
 import { Player } from "./player";
+import { obterNomeTipo } from "./tipo.enum";
 import promptSync from "prompt-sync";
 
 const prompt = promptSync();
@@ -11,7 +12,7 @@ export class ConsoleInterface implements IInterfaceUsuario {
   }
   exibirCartaEscolhida(carta: ICard): void {
     console.log(
-      `Carta escolhida: Valor ${carta.obterValor()} (custo ${carta.obterCusto()})`
+      `Carta escolhida: ${obterNomeTipo(carta.obterTipo())} ${carta.obterValor()} (custo ${carta.obterCusto()})`
     );
   }
   exibirDano(alvo: Player, dano: number): void {
@@ -21,7 +22,10 @@ export class ConsoleInterface implements IInterfaceUsuario {
   }
   selecionarCarta(mao: ICard[], mana: number): ICard | undefined {
     const opcoes = mao
-      .map((c, i) => `${i}:${c.obterValor()}(c${c.obterCusto()})`)
+      .map(
+        (c, i) =>
+          `${i}:${obterNomeTipo(c.obterTipo())} ${c.obterValor()}(c${c.obterCusto()})`
+      )
       .join(", ");
     const resposta = prompt(
       `Com qual carta voce quer jogar [${opcoes}] --- Mana ${mana}: `
