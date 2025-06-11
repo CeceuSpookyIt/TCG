@@ -53,7 +53,10 @@ export class Game {
     }
 
     while (jogadorAtacante.temCartaDisponivel()) {
-      const carta: ICard | undefined = this.iu.selecionarCarta();
+      const carta: ICard | undefined = this.iu.selecionarCarta(
+        jogadorAtacante.mao,
+        jogadorAtacante.mana
+      );
       if (!carta) {
         break;
       }
