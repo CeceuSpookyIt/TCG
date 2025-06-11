@@ -3,7 +3,7 @@ Criar interface para o jogador (Console)
 Nome Jogador 1: 
 Nome jogador 2:
 
-"Com qual carta voce quer atacar [2,5,6] --- Mana 3/6":
+As cartas devem ser listadas em multiplas linhas, ordenadas por valor crescente e numeradas a partir de 1 durante a selecao de cartas do turno.
 
 "jogador vencedor: "
 

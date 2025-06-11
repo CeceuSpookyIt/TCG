@@ -58,20 +58,19 @@ export class ConsoleInterface implements IInterfaceUsuario {
     console.log(`Veneno aplicado por ${duracao} turno(s)`);
   }
   selecionarCarta(mao: ICard[], mana: number): ICard | undefined {
-    const opcoes = mao
-      .map(
-        (c, i) =>
-          `${i}:${obterNomeTipo(c.obterTipo())} ${c.obterValor()}(c${c.obterCusto()})`
-      )
-      .join(", ");
-    const resposta = prompt(
-      `Com qual carta voce quer jogar [${opcoes}] --- Mana ${mana}: `
-    );
+    const ordenadas = [...mao].sort((a, b) => a.obterValor() - b.obterValor());
+    console.log("Qual carta voce quer jogar?");
+    ordenadas.forEach((c, i) => {
+      console.log(
+        `${i + 1} - ${obterNomeTipo(c.obterTipo())} ${c.obterValor()}(c${c.obterCusto()})`
+      );
+    });
+    const resposta = prompt(`Opcao (0 para passar) --- Mana ${mana}: `);
     const indice = parseInt(resposta, 10);
-    if (isNaN(indice) || indice < 0 || indice >= mao.length) {
+    if (isNaN(indice) || indice <= 0 || indice > ordenadas.length) {
       return undefined;
     }
-    const carta = mao[indice];
+    const carta = ordenadas[indice - 1];
     if (carta.obterCusto() > mana) {
       console.log("Mana insuficiente!");
       return undefined;
