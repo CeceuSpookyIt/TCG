@@ -17,3 +17,7 @@ rules when updating the code.
 
 - Keep the existing TypeScript style.
 - Do not introduce linting or formatting tools without explicit instruction.
+
+## Specs Maintenance
+
+- Always update `specs.txt` whenever making code changes.

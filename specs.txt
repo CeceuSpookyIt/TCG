@@ -20,3 +20,31 @@ Criar carta hemorragia (veneno)
 Criar sistema de profissoes de jogador (mage, thief, barbaro, bardo, guerreiro)
 
 
+
+==== Especificacao Funcional ====
+1. Inicio
+- Perguntar a quantidade de jogadores (1 ou 2).
+- No modo solo o segundo jogador e controlado pela CPU.
+- Solicitar o nome de cada jogador.
+
+2. Objetivo
+- Cada jogador comeca com 30 pontos de vida.
+- Vence quem reduzir a vida do oponente a zero.
+
+3. Turno
+- No inicio do turno o jogador compra uma carta.
+- A mana e reiniciada de acordo com os slots disponiveis.
+- Jogar cartas enquanto houver mana suficiente.
+- Efeitos de buff, escudo e veneno sao processados conforme as cartas.
+
+4. Tipos de carta
+- Ataque: causa dano direto.
+- Cura: recupera vida.
+- Buff: multiplica o valor da proxima acao.
+- Escudo: reduz o proximo dano recebido.
+- Mana: adiciona mana extra para o turno.
+- Veneno: causa dano continuo no adversario.
+
+5. Fim do jogo
+- Quando um jogador fica sem vida o adversario vence.
+- Se ambos chegarem a zero no mesmo momento ha empate.
