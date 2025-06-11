@@ -40,13 +40,12 @@ export function escolherCartasBooster(
   selecionador: (opcoes: ICard[]) => number
 ): ICard[] {
   const escolhidas: ICard[] = [];
-  const opcoes = [...booster];
   for (let i = 0; i < qtd; i++) {
-    const indice = selecionador(opcoes);
-    if (indice < 0 || indice >= opcoes.length) {
+    const indice = selecionador(booster);
+    if (indice < 0 || indice >= booster.length) {
       throw new Error("Indice invalido");
     }
-    escolhidas.push(opcoes.splice(indice, 1)[0]);
+    escolhidas.push(booster.splice(indice, 1)[0]);
   }
   return escolhidas;
 }

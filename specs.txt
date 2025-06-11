@@ -30,6 +30,7 @@ Criar sistema de profissoes de jogador (mage, thief, barbaro, bardo, guerreiro)
 - Cada jogador monta um deck de 40 cartas antes de escolher a classe.
 - O deck e formado por 10 boosters de 8 cartas aleatorias cada um, dos quais o jogador escolhe 4.
 - A CPU realiza o mesmo processo automaticamente.
+- O booster deve ser exibido apos cada escolha para atualizar os indices restantes.
 
 2. Objetivo
 - Cada jogador comeca com 30 pontos de vida.
