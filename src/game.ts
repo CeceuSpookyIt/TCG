@@ -31,9 +31,15 @@ export class Game {
       this.jogador2.comprarCarta();
     }
 
-    this.rodarTurno(jogadorAtacante, jogadorDefensor);
-    [jogadorAtacante, jogadorDefensor] = [jogadorDefensor, jogadorAtacante];
-    this.rodarTurno(jogadorAtacante, jogadorDefensor);
+    while (!this.Vencedor) {
+      this.rodarTurno(jogadorAtacante, jogadorDefensor);
+      if (!this.Vencedor) {
+        [jogadorAtacante, jogadorDefensor] = [
+          jogadorDefensor,
+          jogadorAtacante,
+        ];
+      }
+    }
   }
 
   rodarTurno(jogadorAtacante: Player, jogadorDefensor: Player) {
