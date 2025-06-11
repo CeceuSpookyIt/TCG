@@ -1,4 +1,9 @@
 import { CardAtaque } from "./cards/cardAtaque";
+import { CardCura } from "./cards/cardCura";
+import { CardBuff } from "./cards/cardBuff";
+import { CardEscudo } from "./cards/cardEscudo";
+import { CardMana } from "./cards/cardMana";
+import { CardVeneno } from "./cards/cardVeneno";
 import { ICard } from "./cards/ICard";
 import { enumTipo } from "./tipo.enum";
 import { enumClasse } from "./classe.enum";
@@ -25,10 +30,17 @@ export class Player {
     this.mana = 1;
     this.manaSlot = 0;
 
-    const valores = [
-      1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 5, 6, 7, 8,
-    ];
-    this.deck = valores.map((v) => new CardAtaque(v));
+    this.deck = [];
+    for (const valor of [1, 2, 3]) {
+      this.deck.push(new CardAtaque(valor));
+      this.deck.push(new CardCura(valor));
+      this.deck.push(new CardBuff(valor));
+      this.deck.push(new CardEscudo(valor));
+      this.deck.push(new CardMana(valor));
+      this.deck.push(new CardVeneno(valor));
+    }
+    this.deck.push(new CardAtaque(4));
+    this.deck.push(new CardCura(4));
     this.mao = [];
     this.buff = 1;
     this.escudos = [];

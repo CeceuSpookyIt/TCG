@@ -31,30 +31,20 @@ describe("player", () => {
     expect(_sut.manaSlot).toBe(0);
   });
 
-  it("Deve iniciar o jogo com a seguinte combinacao de cartas", () => {
-    expect(_sut.deck).toEqual([
-      new CardAtaque(1),
-      new CardAtaque(1),
-      new CardAtaque(2),
-      new CardAtaque(2),
-      new CardAtaque(3),
-      new CardAtaque(3),
-      new CardAtaque(3),
-      new CardAtaque(4),
-      new CardAtaque(4),
-      new CardAtaque(4),
-      new CardAtaque(4),
-      new CardAtaque(5),
-      new CardAtaque(5),
-      new CardAtaque(5),
-      new CardAtaque(6),
-      new CardAtaque(6),
-      new CardAtaque(7),
-      new CardAtaque(7),
-      new CardAtaque(8),
-      new CardAtaque(9),
-    ]);
-  });
+it("Deve iniciar o jogo com todos os tipos de cartas", () => {
+  expect(_sut.deck.length).toBe(20);
+  const tipos = new Set(_sut.deck.map((c) => c.obterTipo()));
+  expect(Array.from(tipos)).toEqual(
+    expect.arrayContaining([
+      enumTipo.ataque,
+      enumTipo.cura,
+      enumTipo.buff,
+      enumTipo.escudo,
+      enumTipo.mana,
+      enumTipo.veneno,
+    ])
+  );
+});
 
   it("Deve iniciar o jogo sem nenhuma carta na mao", () => {
     expect(_sut.mao.length).toBe(0);
