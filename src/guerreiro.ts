@@ -4,8 +4,8 @@ import { ICard } from "./cards/ICard";
 import { enumTipo } from "./tipo.enum";
 
 export class Guerreiro extends Player {
-  constructor(nome: string) {
-    super(nome);
+  constructor(nome: string, deck?: ICard[]) {
+    super(nome, deck);
     this.classe = enumClasse.guerreiro;
   }
 

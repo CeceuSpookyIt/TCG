@@ -2,7 +2,7 @@ Criar interface para o jogador (Console)
 
 Nome Jogador 1:
 Nome jogador 2:
-As classes devem ser escolhidas antes de perguntar o nome do jogador.
+As classes devem ser escolhidas apos a criacao do deck.
 
 As cartas devem ser listadas em multiplas linhas, ordenadas por valor crescente e numeradas a partir de 1 durante a selecao de cartas do turno.
 
@@ -27,6 +27,9 @@ Criar sistema de profissoes de jogador (mage, thief, barbaro, bardo, guerreiro)
 - Perguntar a quantidade de jogadores (1 ou 2).
 - No modo solo o segundo jogador e controlado pela CPU.
 - Solicitar o nome de cada jogador.
+- Cada jogador monta um deck de 40 cartas antes de escolher a classe.
+- O deck e formado por 10 boosters de 8 cartas aleatorias cada um, dos quais o jogador escolhe 4.
+- A CPU realiza o mesmo processo automaticamente.
 
 2. Objetivo
 - Cada jogador comeca com 30 pontos de vida.
