@@ -68,11 +68,17 @@ export class Game {
       if (!carta) {
         break;
       }
+      if (this.iu.exibirCartaEscolhida) {
+        this.iu.exibirCartaEscolhida(carta);
+      }
 
       switch (carta.obterTipo()) {
         case enumTipo.ataque: {
           const dano = jogadorAtacante.atacar(carta);
           jogadorDefensor.defenderAtaque(dano);
+          if (this.iu.exibirDano) {
+            this.iu.exibirDano(jogadorDefensor, dano);
+          }
           if (!jogadorDefensor.estaVivo()) {
             this.Vencedor = jogadorAtacante;
           }
