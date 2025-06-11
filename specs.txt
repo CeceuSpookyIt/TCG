@@ -5,6 +5,7 @@ Nome jogador 2:
 As classes devem ser escolhidas apos a criacao do deck.
 
 As cartas devem ser listadas em multiplas linhas, ordenadas por valor crescente e numeradas a partir de 1 durante a selecao de cartas do turno.
+A interface deve exibir um quadro resumindo vida, escudos e venenos de ambos os jogadores antes de cada escolha de carta.
 
 "jogador vencedor: "
 

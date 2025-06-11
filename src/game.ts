@@ -73,6 +73,9 @@ export class Game {
     }
 
     while (jogadorAtacante.temCartaDisponivel()) {
+      if (iuAtual.exibirTela) {
+        iuAtual.exibirTela(jogadorAtacante, jogadorDefensor);
+      }
       const carta: ICard | undefined = iuAtual.selecionarCarta(
         jogadorAtacante.mao,
         jogadorAtacante.mana

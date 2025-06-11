@@ -17,4 +17,5 @@ export interface IInterfaceUsuario {
   exibirEscudo?(valor: number): void;
   exibirManaExtra?(valor: number): void;
   exibirVeneno?(duracao: number): void;
+  exibirTela?(jogador: Player, oponente: Player): void;
 }

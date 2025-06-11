@@ -57,6 +57,32 @@ export class ConsoleInterface implements IInterfaceUsuario {
   exibirVeneno(duracao: number): void {
     console.log(`Veneno aplicado por ${duracao} turno(s)`);
   }
+  exibirTela(jogador: Player, oponente: Player): void {
+    const escudosOponente = oponente.escudos.length;
+    const venenoOponenteQtd = oponente.venenos.length;
+    const venenoOponenteDuracao =
+      venenoOponenteQtd > 0 ? Math.max(...oponente.venenos) : 0;
+    const escudosJogador = jogador.escudos.length;
+    const venenoJogadorQtd = jogador.venenos.length;
+    const venenoJogadorDuracao =
+      venenoJogadorQtd > 0 ? Math.max(...jogador.venenos) : 0;
+
+    console.log("========================================");
+    console.log(
+      `= ${oponente.vida} ${oponente.nome} E${escudosOponente} V${venenoOponenteQtd}${venenoOponenteDuracao}=`
+    );
+    console.log("=Opcoes de cartas=");
+    const ordenadas = [...jogador.mao].sort((a, b) => a.obterValor() - b.obterValor());
+    ordenadas.forEach((c, i) => {
+      console.log(
+        `${i + 1} - ${obterNomeTipo(c.obterTipo())} ${c.obterCusto()}`
+      );
+    });
+    console.log(
+      `= ${jogador.vida} ${jogador.nome} E${escudosJogador} V${venenoJogadorQtd}${venenoJogadorDuracao}=`
+    );
+    console.log("========================================");
+  }
   selecionarCarta(mao: ICard[], mana: number): ICard | undefined {
     const ordenadas = [...mao].sort((a, b) => a.obterValor() - b.obterValor());
     console.log("Qual carta voce quer jogar?");
