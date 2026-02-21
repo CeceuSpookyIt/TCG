@@ -24,7 +24,7 @@ export class Game {
     return jogador === this.jogador1 ? this.iuJogador1 : this.iuJogador2;
   }
 
-  iniciarJogo() {
+  async iniciarJogo() {
     let jogadorAtacante: Player;
     let jogadorDefensor: Player;
 
@@ -35,14 +35,14 @@ export class Game {
 
     this.jogador1.embaralharCartas();
     this.jogador2.embaralharCartas();
-  
+
     for (let compra = 0; compra < 3; compra++) {
       this.jogador1.comprarCarta();
       this.jogador2.comprarCarta();
     }
 
     while (!this.Vencedor) {
-      this.rodarTurno(jogadorAtacante, jogadorDefensor);
+      await this.rodarTurno(jogadorAtacante, jogadorDefensor);
       if (!this.Vencedor) {
         [jogadorAtacante, jogadorDefensor] = [
           jogadorDefensor,
@@ -52,7 +52,7 @@ export class Game {
     }
   }
 
-  rodarTurno(jogadorAtacante: Player, jogadorDefensor: Player) {
+  async rodarTurno(jogadorAtacante: Player, jogadorDefensor: Player) {
     const iuAtual = this.interfaceDoJogador(jogadorAtacante);
     const vidaInicial = jogadorAtacante.vida;
     const danoVeneno = jogadorAtacante.processarVenenos();
@@ -76,7 +76,7 @@ export class Game {
       if (iuAtual.exibirTela) {
         iuAtual.exibirTela(jogadorAtacante, jogadorDefensor);
       }
-      const carta: ICard | undefined = iuAtual.selecionarCarta(
+      const carta: ICard | undefined = await iuAtual.selecionarCarta(
         jogadorAtacante.mao,
         jogadorAtacante.mana
       );
@@ -149,8 +149,7 @@ export class Game {
         }
       }
 
-      
+
     }
   }
 }
-

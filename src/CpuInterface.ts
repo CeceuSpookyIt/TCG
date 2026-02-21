@@ -2,7 +2,7 @@ import { ConsoleInterface } from "./ConsoleInterface";
 import { ICard } from "./cards/ICard";
 
 export class CpuInterface extends ConsoleInterface {
-  selecionarCarta(mao: ICard[], mana: number): ICard | undefined {
+  async selecionarCarta(mao: ICard[], mana: number): Promise<ICard | undefined> {
     const jogaveis = mao.filter((c) => c.obterCusto() <= mana);
     if (jogaveis.length === 0) {
       return undefined;

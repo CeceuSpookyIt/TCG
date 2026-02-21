@@ -2,9 +2,20 @@ import { IInterfaceUsuario } from "./IInterfaceUsuario";
 import { ICard } from "./cards/ICard";
 import { Player } from "./player";
 import { obterNomeTipo } from "./tipo.enum";
-import promptSync from "prompt-sync";
+import * as readline from "readline";
 
-const prompt = promptSync();
+function pergunta(texto: string): Promise<string> {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+  return new Promise((resolve) => {
+    rl.question(texto, (resposta) => {
+      rl.close();
+      resolve(resposta);
+    });
+  });
+}
 
 export class ConsoleInterface implements IInterfaceUsuario {
   exibirTurno(jogador: Player): void {
@@ -83,7 +94,7 @@ export class ConsoleInterface implements IInterfaceUsuario {
     );
     console.log("========================================");
   }
-  selecionarCarta(mao: ICard[], mana: number): ICard | undefined {
+  async selecionarCarta(mao: ICard[], mana: number): Promise<ICard | undefined> {
     const ordenadas = [...mao].sort((a, b) => a.obterValor() - b.obterValor());
     console.log("Qual carta voce quer jogar?");
     ordenadas.forEach((c, i) => {
@@ -91,7 +102,7 @@ export class ConsoleInterface implements IInterfaceUsuario {
         `${i + 1} - ${obterNomeTipo(c.obterTipo())} ${c.obterCusto()}`
       );
     });
-    const resposta = prompt(`Opcao (0 para passar) --- Mana ${mana}: `);
+    const resposta = await pergunta(`Opcao (0 para passar) --- Mana ${mana}: `);
     const indice = parseInt(resposta, 10);
     if (isNaN(indice) || indice <= 0 || indice > ordenadas.length) {
       return undefined;
